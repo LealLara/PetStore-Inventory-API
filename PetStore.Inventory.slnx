@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PetStore.Inventory.Api/PetStore.Inventory.Api.csproj" />
+  <Project Path="PetStore.Inventory.Application/PetStore.Inventory.Application.csproj" Id="0d32e66f-598e-4100-b374-5302b6e27775" />
+  <Project Path="PetStore.Inventory.Domain/PetStore.Inventory.Domain.csproj" Id="e8be4999-db81-4e7d-8398-ee81475985d4" />
+  <Project Path="PetStore.Inventory.Infrastructure/PetStore.Inventory.Infrastructure.csproj" Id="75e199c8-4d4d-4613-b363-02903500ce6f" />
+</Solution>
