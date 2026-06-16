@@ -18,7 +18,7 @@ namespace PetStore.Inventory.Api.Controllers
         {
             try
             {
-                bool success = await _service.StartAppAsync();
+                bool success = await _service.StartApp();
 
                 return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Failed to start the application.");
             }

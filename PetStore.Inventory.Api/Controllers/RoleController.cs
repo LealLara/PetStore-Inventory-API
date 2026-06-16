@@ -29,7 +29,7 @@ namespace PetStore.Inventory.Api.Controllers
         {
             try
             {
-                var roles = await _service.GetAllRoles();
+                IEnumerable<RoleModel> roles = await _service.GetAllRoles();
 
                 if (roles == null || !roles.Any())
                     return NotFound("No roles found for the specified filter.");

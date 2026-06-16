@@ -3,6 +3,6 @@
     public interface IAccessConfigServices
     {
 
-        Task<bool> StartAppAsync();
+        Task<bool> StartApp();
     }
 }

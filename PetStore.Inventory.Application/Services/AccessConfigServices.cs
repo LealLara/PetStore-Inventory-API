@@ -8,13 +8,14 @@ namespace PetStore.Inventory.Application.Services
     {
         private readonly IAccessConfigRepository _accessConfigRepository;
         private readonly IRoleServices _roleServices;
+        private readonly ILogTypeServices _logTypeServices  ;
 
         public AccessConfigServices(IAccessConfigRepository accessConfigRepository)
         {
             _accessConfigRepository = accessConfigRepository;
         }
 
-        public async Task<bool> StartAppAsync()
+        public async Task<bool> StartApp()
         {
             bool success = false;
             
@@ -26,12 +27,12 @@ namespace PetStore.Inventory.Application.Services
         }
 
         public async Task<bool> CreatePatternRoles()
-        {
-            //GetUserRoles
-
-
+        { 
             return await _roleServices.CreatePatternRoles();
-
+        }
+        public async Task<bool> CreatePatternLogTypes()
+        { 
+            return await _logTypeServices.CreatePatternLogTypes();
         }
     }
 }
