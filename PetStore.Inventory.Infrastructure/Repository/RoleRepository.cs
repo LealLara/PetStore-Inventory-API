@@ -59,7 +59,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<RoleEntity> roles = _context.RolesTable.AsNoTracking().Where(r => filters.Contains(r.RoleName));
+                IQueryable<RoleEntity> roles = _context.RolesTable.Where(r => r.RoleName.ToLower().Contains(filters.ToLower())); 
 
                 return ModelFactory.CreateRoles(roles);
             }

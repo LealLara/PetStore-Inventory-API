@@ -22,7 +22,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API do sistema Pet Store"
     });
-     
+    c.EnableAnnotations();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
