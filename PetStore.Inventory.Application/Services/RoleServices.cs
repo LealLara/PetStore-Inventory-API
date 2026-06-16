@@ -5,7 +5,7 @@ using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
 using PetStore.Inventory.Domain.Utils.Validations;
 
-namespace PetStore.Inventory.Application.Interfaces
+namespace PetStore.Inventory.Application.Services
 {
     public class RoleServices : IRoleServices
     {

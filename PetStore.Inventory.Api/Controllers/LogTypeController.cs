@@ -106,7 +106,7 @@ namespace PetStore.Inventory.Api.Controllers
         {
             try
             {
-                bool success = await _service.CreateLogType(data.ToBusinessRequest());
+                bool success = await _service.CreateLogTypes(data.ToBusinessRequest());
                 return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Failed to create log type.");
             }
             catch (Exception ex)
@@ -115,5 +115,26 @@ namespace PetStore.Inventory.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Endpoint que cria tipos de log padrão pré-definidos.
+        /// </summary>
+        /// <returns>Retorna o resultado da operação de criação.</returns>
+        [SwaggerOperation(Summary = "Cria tipos de log padrão", Description = "Cria tipos de log padrão pré-definidos.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Tipos de log padrão criados com sucesso")]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao criar os tipos de log padrão", typeof(string))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpPost("create-pattern-log-types")]
+        public async Task<IActionResult> CreatePatternLogTypes()
+        {
+            try
+            {
+                bool success = await _service.CreatePatternLogTypes();
+                return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Failed to create pattern log types.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating pattern log types: {ex.Message}");
+            }
+        }
     }
 }

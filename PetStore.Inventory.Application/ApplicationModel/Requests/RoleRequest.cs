@@ -41,6 +41,12 @@ namespace PetStore.Inventory.Application.ApplicationModel.Requests
             RoleName = PatternRoles.PatterRoleSeller,
             RoleDescription = PatternRoles.PatterRoleSellerDescription,
             IsActive = true
+        },
+        new ()
+        {
+            RoleName = PatternRoles.PatterRoleSystem,
+            RoleDescription = PatternRoles.PatterRoleSystemDescription,
+            IsActive = true
         }
         ];
 

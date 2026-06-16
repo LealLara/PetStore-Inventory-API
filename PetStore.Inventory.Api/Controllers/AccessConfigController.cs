@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetStore.Inventory.Domain.Interfaces.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace PetStore.Inventory.Api.Controllers
 {
@@ -13,6 +14,13 @@ namespace PetStore.Inventory.Api.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Endpoint que inicia a aplicação, criando os registros iniciais de papéis, tipos de log.
+        /// </summary>
+        /// <returns>Resultado da operação</returns
+        [SwaggerOperation(Summary = "Inicia a aplicação", Description = "Cria os registros iniciais de papéis, tipos de log e outras configurações necessárias para o funcionamento da aplicação.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "A aplicação foi iniciada com sucesso.")]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao iniciar a aplicação.")]
         [HttpPost("start-app")]
         public async Task<IActionResult> StartApp()
         {

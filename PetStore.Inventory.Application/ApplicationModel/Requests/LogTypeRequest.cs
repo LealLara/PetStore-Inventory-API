@@ -1,14 +1,66 @@
-﻿namespace PetStore.Inventory.Application.ApplicationModel.Requests
+﻿using PetStore.Inventory.Domain.BusinessModel;
+using PetStore.Inventory.Domain.Entities;
+using PetStore.Inventory.Domain.Utils.Constants;
+
+namespace PetStore.Inventory.Application.ApplicationModel.Requests
 {
     public class LogTypeRequest
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int LogTypeId { get; private set; }
+        public string LogTypeName { get; private set; }
+        public string LogTypeDescription { get; private set; }
         public LogTypeRequest() { }
-        public LogTypeRequest(string name, string description)
+        public LogTypeRequest(string logTypeName, string logTypeDescription )
         {
-            Name = name;
-            Description = description;
+            LogTypeName = logTypeName;
+            LogTypeDescription = logTypeDescription;
+        }
+
+
+
+
+        public List<LogTypeModel> SetPatternLogTypes() =>
+        [
+            new ()
+        {
+            LogTypeName = PatternLogTypes.PatternLogTypeInfo,
+            LogTypeDescription = PatternLogTypes.PatternLogTypeInfoDescription, 
+        },
+        new ()
+        {
+            LogTypeName = PatternLogTypes.PatternLogTypeError,
+            LogTypeDescription = PatternLogTypes.PatternLogTypeErrorDescription, 
+        },
+        new ()
+        {
+            LogTypeName = PatternLogTypes.PatternLogTypeWarning,
+            LogTypeDescription = PatternLogTypes.PatternLogTypeWarningDescription, 
+        }
+        ];
+
+        public LogTypeModel ToModel()
+        {
+            return new(
+                LogTypeId,
+                LogTypeName,
+                LogTypeDescription
+            );
+        }
+        public LogTypeEntity ToEntity()
+        {
+            return new(
+                LogTypeId,
+                LogTypeName,
+                LogTypeDescription
+            );
+        }
+        public List<LogTypeEntity> ToEntityList(List<LogTypeModel> logTypeModels)
+        {
+            return logTypeModels.Select(logTypeModel => new LogTypeEntity(
+                logTypeModel.LogTypeId,
+                logTypeModel.LogTypeName,
+                logTypeModel.LogTypeDescription
+            )).ToList();
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     public interface IAccessConfigServices
     {
-
         Task<bool> StartApp();
     }
 }

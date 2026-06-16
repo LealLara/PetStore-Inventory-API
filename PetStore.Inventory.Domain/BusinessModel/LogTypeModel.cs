@@ -1,23 +1,33 @@
-﻿namespace PetStore.Inventory.Domain.BusinessModel
+﻿using PetStore.Inventory.Domain.Entities;
+
+namespace PetStore.Inventory.Domain.BusinessModel
 {
     public class LogTypeModel
     {
         public int LogTypeId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string LogTypeName { get; set; }
+        public string LogTypeDescription { get; set; }
 
 
         public LogTypeModel() { }
-        public LogTypeModel(int logTypeId, string name, string description)
+        public LogTypeModel(int logTypeId, string logTypeName, string logTypeDescription)
         {
             LogTypeId = logTypeId;
-            Name = name;
-            Description = description;
+            LogTypeName = logTypeName;
+            LogTypeDescription = logTypeDescription;
         }
-        public LogTypeModel(string name, string description)
+        public LogTypeModel(string logTypeName, string logTypeDescription)
         {
-            Name = name;
-            Description = description;
+            LogTypeName = logTypeName;
+            LogTypeDescription = logTypeDescription ;
+        }
+        public LogTypeEntity ToEntity()
+        {
+            return new(
+                LogTypeId,
+                LogTypeName,
+                LogTypeDescription
+            );
         }
     }
 }

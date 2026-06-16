@@ -7,5 +7,8 @@
 
         public const string PatterRoleSeller = "Seller";
         public const string PatterRoleSellerDescription = "Sales Associate";
+
+        public const string PatterRoleSystem = "System";
+        public const string PatterRoleSystemDescription = "System User";
     } 
 }

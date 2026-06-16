@@ -1,5 +1,4 @@
-﻿using PetStore.Inventory.Application.ApplicationModel.Requests;
-using PetStore.Inventory.Domain.BusinessModel;
+﻿using PetStore.Inventory.Domain.BusinessModel;
 using PetStore.Inventory.Domain.Entities;
 
 namespace PetStore.Inventory.Application.Interfaces.Repositories

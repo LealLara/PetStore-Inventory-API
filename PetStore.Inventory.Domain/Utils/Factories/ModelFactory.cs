@@ -15,6 +15,15 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 IsActive = r.IsActive
             }) ?? Enumerable.Empty<RoleModel>();
         }
+        public static IEnumerable<LogTypeModel> CreateLogTypes(IQueryable<LogTypeEntity> logTypeEntities)
+        {
+            return logTypeEntities?.Select(l => new LogTypeModel
+            {
+                LogTypeId = l.LogTypeId,
+                LogTypeName = l.LogTypeName,
+                LogTypeDescription = l.LogTypeDescription
+            }) ?? Enumerable.Empty<LogTypeModel>();
+        }
 
 
 

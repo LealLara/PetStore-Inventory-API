@@ -8,30 +8,38 @@ namespace PetStore.Inventory.Application.Services
     {
         private readonly IAccessConfigRepository _accessConfigRepository;
         private readonly IRoleServices _roleServices;
-        private readonly ILogTypeServices _logTypeServices  ;
+        private readonly ILogTypeServices _logTypeServices;
 
-        public AccessConfigServices(IAccessConfigRepository accessConfigRepository)
+        public AccessConfigServices(IAccessConfigRepository accessConfigRepository, IRoleServices roleServices, ILogTypeServices logTypeServices)
         {
             _accessConfigRepository = accessConfigRepository;
+            _roleServices = roleServices;
+            _logTypeServices = logTypeServices;
         }
 
         public async Task<bool> StartApp()
         {
             bool success = false;
-            
-           await CreatePatternRoles(); 
 
-             
+            success = await CreatePatternRoles();
 
+            if (success)
+            {
+                await CreatePatternLogTypes();
+            }
+            else
+            {
+                throw new Exception("Registros iniciais já estão criados. Prossiga a partir da criação de usuários.");
+            }
             return success;
         }
 
-        public async Task<bool> CreatePatternRoles()
-        { 
+        private async Task<bool> CreatePatternRoles()
+        {
             return await _roleServices.CreatePatternRoles();
         }
-        public async Task<bool> CreatePatternLogTypes()
-        { 
+        private async Task<bool> CreatePatternLogTypes()
+        {
             return await _logTypeServices.CreatePatternLogTypes();
         }
     }

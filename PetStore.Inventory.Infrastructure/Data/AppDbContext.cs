@@ -7,6 +7,8 @@ namespace PetStore.Inventory.Infrastructure.Data
     {
         public DbSet<UserEntity> UsersTable => Set<UserEntity>();
         public DbSet<RoleEntity> RolesTable => Set<RoleEntity>();
+        public DbSet<LogTypeEntity> LogTypesTable => Set<LogTypeEntity>();
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
           : base(options)
