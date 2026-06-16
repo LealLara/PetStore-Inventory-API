@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetStore.Inventory.Domain.Interfaces.Services;
 
 namespace PetStore.Inventory.Api.Controllers
 {
@@ -6,12 +7,25 @@ namespace PetStore.Inventory.Api.Controllers
     [Route("[controller]")]
     public class AccessConfigController : ControllerBase
     {
-
-        private readonly IAccessConfigService _service;
-        public AccessConfigController(IAccessConfigService service)
+        private readonly IAccessConfigServices _service;
+        public AccessConfigController(IAccessConfigServices service)
         {
             _service = service;
         }
 
+        [HttpPost("start-app")]
+        public async Task<IActionResult> StartApp()
+        {
+            try
+            {
+                bool success = await _service.StartAppAsync();
+
+                return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Failed to start the application.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while starting the application: {ex.Message}");
+            }
+        }
     }
 }

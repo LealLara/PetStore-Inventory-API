@@ -13,4 +13,14 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PetStore.Inventory.Application\PetStore.Inventory.Application.csproj" />
+    <ProjectReference Include="..\PetStore.Inventory.Domain\PetStore.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\PetStore.Inventory.Infrastructure\PetStore.Inventory.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ApplicationDTOs\Results\" />
+  </ItemGroup>
+
 </Project>
