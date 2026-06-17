@@ -27,7 +27,7 @@ namespace PetStore.Inventory.Application.Services
         [SwaggerResponse(StatusCodes.Status200OK, "Cadastrado com sucesso.")]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Dados do usuário inválidos.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]    
-        [HttpPost("user-register")]
+        [HttpPost("create-user")]
         public async Task<IActionResult> CreateUserRegister(UserFirstRegisterDTO data)
         {
             try
@@ -61,7 +61,7 @@ namespace PetStore.Inventory.Application.Services
         {
             try
             {
-                DataRegisterResult result = await _service.Login(data.ToBusiness());
+                string result = await _service.Login(data.ToBusinessRequest());
 
                 if (result is null)
                 {

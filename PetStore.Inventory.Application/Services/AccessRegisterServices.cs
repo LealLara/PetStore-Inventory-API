@@ -12,6 +12,7 @@ namespace PetStore.Inventory.Api.Controllers
     {
         private readonly IAccessRegisterRepository _repository;
         private readonly IUserServices _userServices;
+        private readonly IUserServices _userServices;
         public AccessRegisterServices(IAccessRegisterRepository repository, IUserServices userServices)
         {
             _repository = repository;
@@ -23,9 +24,9 @@ namespace PetStore.Inventory.Api.Controllers
             return await _userServices.CreateUser(request);
         } 
 
-        public async Task<DataRegisterResult> Login(LoginRegisterRequest request)
+        public async Task<string> Login(LoginRegisterRequest request)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); 
         }
 
         public async Task<bool> Logoff(int userId)

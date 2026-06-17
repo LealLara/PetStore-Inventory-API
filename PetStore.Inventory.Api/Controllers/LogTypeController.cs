@@ -25,6 +25,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Lista de tipos de log retornada com sucesso", typeof(IEnumerable<LogTypeModel>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum tipo de log encontrado para o filtro especificado", typeof(string))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao recuperar os tipos de log", typeof(string))]
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {

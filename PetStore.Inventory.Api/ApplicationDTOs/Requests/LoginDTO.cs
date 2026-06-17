@@ -7,7 +7,7 @@ namespace PetStore.Inventory.Api.ApplicationDTOs.Requests
         public string Nickname { get; set; }
         public string Password { get; set; } = string.Empty;
 
-        public LoginRegisterRequest ToBusiness()
+        public LoginRegisterRequest ToBusinessRequest()
         {
             return new LoginRegisterRequest(Nickname, Password);
         }
