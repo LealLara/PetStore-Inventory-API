@@ -13,7 +13,7 @@ namespace PetStore.Inventory.Domain.BusinessModel
         public RoleModel(string roleName, string roleDescription)
         {
             RoleName = roleName;
-            RoleDescription = roleDescription; 
+            RoleDescription = roleDescription;
         }
         public RoleModel(string roleName, string roleDescription, bool isActive)
         {

@@ -3,11 +3,12 @@ using PetStore.Inventory.Api.ApplicationDTOs.Requests;
 using PetStore.Inventory.Application.BusinessDTOs.Results;
 using PetStore.Inventory.Application.Interfaces.Services;
 
-namespace PetStore.Inventory.Api.Controllers
+namespace PetStore.Inventory.Application.Services
 {
+    [ApiController]
+    [Route("[controller]")]
     public class AccessRegisterController : ControllerBase
-    {
-        private readonly ILogger<AccessRegisterController> _logger;
+    { 
         private readonly IAccessRegisterServices _service;
 
         public AccessRegisterController(IAccessRegisterServices service)
@@ -15,18 +16,23 @@ namespace PetStore.Inventory.Api.Controllers
             _service = service;
         }
 
-        [HttpPost("user-first-register")]
-        public async Task<IActionResult> CreateFirstRegister(UserFirstRegisterDTO data)
+        [HttpPost("user-register")]
+        public async Task<IActionResult> CreateUserRegister(UserFirstRegisterDTO data)
         {
             try
             {
-                DataRegisterResult result = await _service.CreateAccessRegister(data.ToBusiness());
+                bool success = await _service.CreateAccessRegister(data.ToBusinessRequest());
 
-                return Ok("User registered successfully.");
+                if (!success)
+                {
+                    return BadRequest("O cadastro do usuário falhou.");
+                }
+
+                return Ok("Cadastrado com sucesso.");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while registering the user: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao cadastrar o usuário: {ex.Message}");
             }
         }
 
@@ -39,14 +45,14 @@ namespace PetStore.Inventory.Api.Controllers
 
                 if (result is null)
                 {
-                    return NotFound("User not found.");
+                    return NotFound("Usuário não encontrado.");
                 }
 
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while logging in the user: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao fazer o login do usuário: {ex.Message}");
             }
         }
 
@@ -57,11 +63,11 @@ namespace PetStore.Inventory.Api.Controllers
             {
                 bool success = await _service.Logoff(userId);
 
-                return success ? Ok(StatusCodes.Status200OK) : NotFound("User not found.");
+                return success ? Ok(StatusCodes.Status200OK) : NotFound("Usuário não encontrado.");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while logging off the user: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao fazer o logoff do usuário: {ex.Message}");
             }
         }
 
@@ -72,11 +78,11 @@ namespace PetStore.Inventory.Api.Controllers
             {
                 bool success = await _service.RemoveUser(userId);
 
-                return success ? Ok(StatusCodes.Status200OK) : NotFound("User not found.");
+                return success ? Ok(StatusCodes.Status200OK) : NotFound("Usuário não encontrado.");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting the account: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao deletar a conta: {ex.Message}");
             }
         }
     }

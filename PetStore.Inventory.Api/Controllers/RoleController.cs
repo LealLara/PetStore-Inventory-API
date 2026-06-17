@@ -32,13 +32,13 @@ namespace PetStore.Inventory.Api.Controllers
                 IEnumerable<RoleModel> roles = await _service.GetAllRoles();
 
                 if (roles == null || !roles.Any())
-                    return NotFound("No roles found for the specified filter.");
+                    return NotFound("Nenhum papel encontrado.");
 
                 return Ok(roles);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving roles: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao recuperar os papéis: {ex.Message}");
             }
         }
 
@@ -59,13 +59,13 @@ namespace PetStore.Inventory.Api.Controllers
                 IEnumerable<RoleModel> roles = await _service.GetRolesFilteredByString(filters);
 
                 if (roles == null || !roles.Any())
-                    return NotFound("No roles found for the specified filter.");
+                    return NotFound("Nenhum papel encontrado para o filtro especificado.");
 
                 return Ok(roles);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving roles: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao recuperar os papéis filtrados: {ex.Message}");
             }
         }
 
@@ -86,13 +86,13 @@ namespace PetStore.Inventory.Api.Controllers
                 IEnumerable<RoleModel> roles = await _service.GetRolesFilteredById(filters);
                
                 if (roles == null || !roles.Any())
-                    return NotFound("No roles found for the specified filter.");
+                    return NotFound("Nenhum papel encontrado para o filtro especificado.");
                 
                 return Ok(roles);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving roles: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao recuperar os papéis filtrados: {ex.Message}");
             }
         }
 
@@ -110,11 +110,11 @@ namespace PetStore.Inventory.Api.Controllers
             try
             {
                 bool success = await _service.CreateRole(data.ToBusinessRequest());
-                return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Failed to create role.");
+                return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Falha ao criar o papel.");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating role: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao criar o papel: {ex.Message}");
             }
         }
         /// <summary>
@@ -132,11 +132,11 @@ namespace PetStore.Inventory.Api.Controllers
             try
             {
                 bool success = await _service.CreatePatternRoles();
-                return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Failed to create pattern roles.");
+                return success ? Ok(StatusCodes.Status200OK) : StatusCode(StatusCodes.Status500InternalServerError, "Falha ao criar os papéis padrões.");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating pattern roles: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao criar os papéis padrões: {ex.Message}");
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using PetStore.Inventory.Domain.BusinessModel;
-using System.Data;
 
 namespace PetStore.Inventory.Domain.Utils.Validations
 {
@@ -16,10 +15,7 @@ namespace PetStore.Inventory.Domain.Utils.Validations
             RuleFor(x => x.RoleDescription)
                 .NotEmpty().WithMessage("Descrição do cargo é obrigatória.")
                 .MinimumLength(10).WithMessage("Descrição do cargo deve ter no mínimo 10 caracteres.");
-     
-        
-        
-        
+
         }
     }
 }

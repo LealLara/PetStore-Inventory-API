@@ -1,5 +1,6 @@
 ﻿using PetStore.Inventory.Domain.BusinessModel;
 using PetStore.Inventory.Domain.Entities;
+using PetStore.Inventory.Domain.Utils.Enums;
 
 namespace PetStore.Inventory.Domain.Utils.Factories
 {
@@ -24,7 +25,18 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 LogTypeDescription = l.LogTypeDescription
             }) ?? Enumerable.Empty<LogTypeModel>();
         }
-
+        public static IEnumerable<UserRegisterModel> CreateUsers(IQueryable<UserEntity> userEntities)
+        {
+            return userEntities?.Select(u => new UserRegisterModel
+            {
+                UserId = u.UserId,
+                FullName = u.FullName,
+                Nickname = u.Nickname,
+                Email = u.Email,
+                Password = u.Password,
+                RoleId = (EUserRoles)u.RoleId
+            }) ?? Enumerable.Empty<UserRegisterModel>();
+        }
 
 
 

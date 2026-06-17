@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PetStore.Inventory.Api.Controllers;
 using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Application.Services;
@@ -55,15 +56,21 @@ var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
 
 #region Services 
 builder.Services.AddScoped<IAccessConfigServices, AccessConfigServices>();
-builder.Services.AddScoped<IRoleServices, RoleServices>();
+builder.Services.AddScoped<IAccessRegisterServices, AccessRegisterServices>();
 builder.Services.AddScoped<ILogTypeServices, LogTypeServices>();
+builder.Services.AddScoped<IRoleServices, RoleServices>();
+builder.Services.AddScoped<IAccessRegisterServices, AccessRegisterServices>();
+builder.Services.AddScoped<IUserServices, UserServices>();
 //builder.Services.AddScoped<ITokenService, TokenService>();
 #endregion
 
 #region  Repositories 
 builder.Services.AddScoped<IAccessConfigRepository, AccessConfigRepository>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IAccessRegisterRepository, AccessRegisterRepository>();
 builder.Services.AddScoped<ILogTypeRepository, LogTypeRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 //builder.Services.AddScoped<IAccessRepository, AccessRepository>();
 #endregion
