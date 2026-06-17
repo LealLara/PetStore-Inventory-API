@@ -78,6 +78,7 @@ namespace PetStore.Inventory.Application.ApplicationModel.Requests
             return new(
                 id: UserId,
                 name: FullName,
+                nickname: Nickname,
                 email: Email,
                 passwordHash: Password,
                 roleId: (int)RoleId

@@ -15,19 +15,19 @@ namespace PetStore.Inventory.Domain.Entities
 
         public UserEntity(){}
 
-        public UserEntity(int id, string name, string email, string passwordHash, int roleId):this()
+        public UserEntity(int id, string name, string nickname, string email, string passwordHash, int roleId):this()
         {
             UserId = id;
             FullName = name;
-            Nickname = name;
+            Nickname = nickname;
             Email = email;
             Password = passwordHash;
             RoleId = roleId;
         }
-        public UserEntity(string name, string email, string passwordHash, int roleId):this()
+        public UserEntity(string name, string email, string nickname, string passwordHash, int roleId):this()
         { 
             FullName = name;
-            Nickname = name;
+            Nickname = nickname;
             Email = email;
             Password = passwordHash;
             RoleId = roleId;

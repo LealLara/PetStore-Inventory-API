@@ -34,7 +34,9 @@ namespace PetStore.Inventory.Domain.BusinessModel
             return new(
                 id: UserId,
                 name: FullName,
-                email: Email,
+            nickname : Nickname,
+
+        email: Email,
                 passwordHash: Password,
                 roleId: (int)RoleId
             );

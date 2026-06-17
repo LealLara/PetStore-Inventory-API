@@ -16,5 +16,6 @@ namespace PetStore.Inventory.Application.Interfaces.Repositories
         Task<bool> CreateUser(UserEntity userData);
 
         Task<bool> CreatePatternUsers(List<UserEntity> userEntities);
+        Task<UserRegisterModel> GetUserFilteredByEmail(string filters);
     }
 }

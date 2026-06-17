@@ -2,6 +2,7 @@
 {
     public enum EUserRoles
     {
+        NONE = 0,
         ADMIN = 1,
         SELLER = 2,
         SYSTEM_OPERATOR = 3,

@@ -16,6 +16,7 @@ namespace PetStore.Inventory.Api.Controllers
         {
             _service = service;
         }
+
         /// <summary>
         /// Endpoint que obtém todos os tipos de log disponíveis.
         /// </summary>
@@ -51,6 +52,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Lista de tipos de log filtrada retornada com sucesso", typeof(IEnumerable<LogTypeModel>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum tipo de log encontrado para o filtro especificado", typeof(string))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao recuperar os tipos de log", typeof(string))]
+        
+        [ApiExplorerSettings(IgnoreApi = true)]
+        
         [HttpGet("get-all-filtered-by-string")]
         public async Task<IActionResult> GetLogTypesFilteredByString(string filters)
         {
@@ -77,7 +81,10 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Obtém tipos de log filtrados por ID", Description = "Retorna uma lista de tipos de log filtrada por um ID de filtro.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Lista de tipos de log filtrada retornada com sucesso", typeof(IEnumerable<LogTypeModel>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum tipo de log encontrado para o filtro especificado", typeof(string))]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao recuperar os tipos de log", typeof(string))] 
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao recuperar os tipos de log", typeof(string))]
+       
+        [ApiExplorerSettings(IgnoreApi = true)]
+       
         [HttpGet("get-all-filtered-by-id")]
         public async Task<IActionResult> GetLogTypesFilteredById(int filters)
         {
@@ -101,6 +108,12 @@ namespace PetStore.Inventory.Api.Controllers
         /// </summary>
         /// <param name="data">Parâmetro contendo os dados para criação do tipo de log.</param>
         /// <returns>Retorna o resultado da operação de criação.</returns>
+        [SwaggerOperation(Summary = "Cria tipos de log", Description = "Cria tipos de log no sistema")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Tipos de log criados com sucesso")]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao criar os tipos de log", typeof(string))]
+        
+        [ApiExplorerSettings(IgnoreApi = true)]
+       
         [HttpPost("create-log-type")]
         public async Task<IActionResult> CreateLogTypes(LogTypeDTO data)
         {
@@ -122,7 +135,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria tipos de log padrão", Description = "Cria tipos de log padrão pré-definidos.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Tipos de log padrão criados com sucesso")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao criar os tipos de log padrão", typeof(string))]
+        
         [ApiExplorerSettings(IgnoreApi = true)]
+        
         [HttpPost("create-pattern-log-types")]
         public async Task<IActionResult> CreatePatternLogTypes()
         {

@@ -95,7 +95,20 @@ namespace PetStore.Inventory.Infrastructure.Repository
             {
                 throw new Exception(ex.Message);
             }
-        } 
+        }
 
+        public async Task<UserRegisterModel> GetUserFilteredByEmail(string filters)
+        {
+            try
+            {
+                UserEntity? users = await _context.UsersTable.FirstOrDefaultAsync(r => r.Email.Contains(filters));
+                 
+                return ModelFactory.CreateUser(users);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

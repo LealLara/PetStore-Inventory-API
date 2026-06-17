@@ -23,10 +23,11 @@ namespace PetStore.Inventory.Api.Controllers
         /// </summary>
         /// <returns>Retorna uma lista de todos os usuários registrados.</returns>
         [SwaggerOperation(Summary = "Recupera todos os usuários.")]
-        [HttpGet("get-all-users")]
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+      
+        [HttpGet("get-all-users")]
         public async Task<IActionResult> GetAllUsers()
         {
             try
@@ -44,44 +45,16 @@ namespace PetStore.Inventory.Api.Controllers
         }
 
         /// <summary>
-        /// Endpoint que recebe um ID de usuário e retorna uma lista de usuários que correspondem a esse ID. Este endpoint é útil para filtrar os usuários com base em seu ID, permitindo que os clientes recuperem informações específicas sobre um usuário ou um conjunto de usuários relacionados a esse ID. O método espera um parâmetro userId do tipo inteiro e retorna uma lista de objetos UserRegisterModel que correspondem ao ID fornecido. Se a recuperação for bem-sucedida, retorna um status 200 OK com a lista de usuários. Caso contrário, retorna um status 500 Internal Server Error com uma mensagem de erro detalhada.
-        /// </summary>
-        /// <param name="userId">O ID do usuário a ser filtrado.</param>
-        /// <returns>Retorna uma lista de usuários que correspondem ao ID fornecido.</returns>
-        [HttpGet("get-all-filtered-by-user-id")]
-        [SwaggerOperation(Summary = "Recupera usuários filtrados por ID.", Description = "Recupera uma lista de usuários que correspondem ao ID fornecido.")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
-        [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado com o ID fornecido.")]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
-        public async Task<IActionResult> GetUsersFilteredById(int userId)
-        {
-            try
-            {
-                IEnumerable<UserRegisterModel> users = await _services.GetUsersFilteredById(userId);
-
-                if (users == null || !users.Any())
-                {
-                    return NotFound($"Nenhum usuário encontrado com o ID {userId}.");
-                }
-
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao recuperar os usuários: {ex.Message}");
-            }
-        }
-
-        /// <summary>
         /// Endpoint que recebe um ID de papel e retorna uma lista de usuários que correspondem a esse ID de papel. Este endpoint é útil para filtrar os usuários com base em seu papel, permitindo que os clientes recuperem informações específicas sobre os usuários relacionados a um determinado papel. O método espera um parâmetro roleId do tipo inteiro e retorna uma lista de objetos UserRegisterModel que correspondem ao ID de papel fornecido. Se a recuperação for bem-sucedida, retorna um status 200 OK com a lista de usuários. Caso contrário, retorna um status 500 Internal Server Error com uma mensagem de erro detalhada.
         /// </summary>
         /// <param name="roleId">O ID do papel a ser filtrado.</param>
         /// <returns>Retorna uma lista de usuários que correspondem ao ID de papel fornecido.</returns>
         [SwaggerOperation(Summary = "Recupera usuários filtrados por ID de papel.", Description = "Recupera uma lista de usuários que correspondem ao ID de papel fornecido.")]
-        [HttpGet("get-all-filtered-by-role-id")]
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado com o ID de papel fornecido.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+
+        [HttpGet("get-all-filtered-by-role-id")]
         public async Task<IActionResult> GetUsersFilteredByRoleId(int roleId)
         {
             try
@@ -107,10 +80,11 @@ namespace PetStore.Inventory.Api.Controllers
         /// <param name="filters">A string de filtros.</param>
         /// <returns>Retorna uma lista de usuários que correspondem aos filtros fornecidos.</returns>
         [SwaggerOperation(Summary = "Recupera usuários filtrados por uma string de filtros.", Description = "Recupera uma lista de usuários que correspondem a uma string de filtros personalizada.")]
-        [HttpGet("get-all-filtered-by-string")]
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado com os filtros aplicados.")]
+
+        [HttpGet("get-all-filtered-by-string")]
         public async Task<IActionResult> GetUsersFilteredByString(string filters)
         {
             try
@@ -131,6 +105,40 @@ namespace PetStore.Inventory.Api.Controllers
         }
 
         /// <summary>
+        /// Endpoint que recebe um ID de usuário e retorna uma lista de usuários que correspondem a esse ID. Este endpoint é útil para filtrar os usuários com base em seu ID, permitindo que os clientes recuperem informações específicas sobre um usuário ou um conjunto de usuários relacionados a esse ID. O método espera um parâmetro userId do tipo inteiro e retorna uma lista de objetos UserRegisterModel que correspondem ao ID fornecido. Se a recuperação for bem-sucedida, retorna um status 200 OK com a lista de usuários. Caso contrário, retorna um status 500 Internal Server Error com uma mensagem de erro detalhada.
+        /// </summary>
+        /// <param name="userId">O ID do usuário a ser filtrado.</param>
+        /// <returns>Retorna uma lista de usuários que correspondem ao ID fornecido.</returns>
+        [SwaggerOperation(Summary = "Recupera usuários filtrados por ID.", Description = "Recupera uma lista de usuários que correspondem ao ID fornecido.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado com o ID fornecido.")]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+
+        [HttpGet("get-all-filtered-by-user-id")]
+        public async Task<IActionResult> GetUsersFilteredById(int userId)
+        {
+            try
+            {
+                IEnumerable<UserRegisterModel> users = await _services.GetUsersFilteredById(userId);
+
+                if (users == null || !users.Any())
+                {
+                    return NotFound($"Nenhum usuário encontrado com o ID {userId}.");
+                }
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao recuperar os usuários: {ex.Message}");
+            }
+        }
+
+
+
+        /// <summary>
         /// Endpoint que recebe os dados de um usuário e tenta criar um novo usuário no sistema. O método espera um objeto do tipo UserRegisterRequest contendo as informações necessárias para a criação do usuário, como nome, email, senha e papel. Se a criação for bem-sucedida, retorna um status 200 OK com uma mensagem de sucesso. Caso contrário, retorna um status 400 Bad Request ou 500 Internal Server Error dependendo do tipo de falha ocorrida.
         /// </summary>
         /// <param name="userRequest">Parâmetro que representa os dados do usuário a ser criado.</param>
@@ -139,11 +147,15 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Usuário criado com sucesso.")]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Dados do usuário inválidos.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser(UserFirstRegisterDTO userRequest)
         {
             try
             {
+
                 bool result = await _services.CreateUser(userRequest.ToBusinessRequest());
                 if (result)
                 {
@@ -160,6 +172,7 @@ namespace PetStore.Inventory.Api.Controllers
             }
         }
 
+
         /// <summary>
         /// Endpoint que cria os usuários padrões no banco de dados, caso eles não existam. Este endpoint é útil para inicializar o sistema com os papéis necessários para o funcionamento adequado da aplicação.
         /// </summary>
@@ -168,7 +181,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria os usuários padrões no banco de dados, caso eles não existam.", Description = "Este endpoint é útil para inicializar o sistema com os usuários necessários para o funcionamento adequado da aplicação. Este endpoint está privado, servindo apenas para uso interno.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários padrões criados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao criar os usuários padrões.")]
+        
         [ApiExplorerSettings(IgnoreApi = true)]
+       
         [HttpPost("create-pattern-users")]
         public async Task<IActionResult> CreatePatternUsers()
         {

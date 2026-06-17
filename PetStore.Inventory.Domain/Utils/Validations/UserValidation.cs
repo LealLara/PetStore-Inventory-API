@@ -27,7 +27,12 @@ namespace PetStore.Inventory.Domain.Utils.Validations
                 .MinimumLength(6).WithMessage("A senha deve ter pelo menos 6 caracteres.");
 
             RuleFor(user => user.RoleId)
-                .Equal(EUserRoles.SYSTEM_OPERATOR).WithMessage("O papel de usuário nao posde ser do tipo operador do sistema.");
+                  .NotEqual(EUserRoles.NONE)
+                  .WithMessage("O papel de usuário deve ser informado.");
+
+            RuleFor(user => user.RoleId)
+                .Must(role => role != EUserRoles.SYSTEM_OPERATOR)
+                .WithMessage("O papel de usuário não pode ser do tipo Operador do Sistema.");
 
         }
     }

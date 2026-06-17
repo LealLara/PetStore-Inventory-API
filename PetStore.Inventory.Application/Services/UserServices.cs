@@ -47,22 +47,49 @@ namespace PetStore.Inventory.Application.Services
 
             valid.ValidateAndThrow(userRequest.ToModel());
 
+            UserRegisterModel emailAreadyExists = await GetUserFilteredByEmail(userRequest.Email);
+
+            if (emailAreadyExists is not null)
+            {
+                if (emailAreadyExists.Email == userRequest.Email)
+                {
+                    throw new Exception("O email informado já está em uso.");
+                }
+            }
+
             return await _repository.CreateUser(userRequest.ToEntity());
         }
 
         public async Task<IEnumerable<UserRegisterModel>> GetUsersFilteredById(int userId)
         {
+            if (userId <= 0)
+                throw new ArgumentException("O ID do usuário deve ser informado.");
+
             return await _repository.GetUsersFilteredById(userId);
         }
         public async Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByRoleId(int roleId)
         {
+            if (roleId <= 0)
+                throw new ArgumentException("O ID de papel do usuário deve ser informado.");
+
             return await _repository.GetUsersFilteredByRoleId(roleId);
         }
 
         public async Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByString(string filters)
         {
+            if (string.IsNullOrEmpty(filters))
+                throw new ArgumentException("Devem ser informada uma string de filtro.");
+
             return await _repository.GetUsersFilteredByString(filters);
         }
-         
+
+        public async Task<UserRegisterModel> GetUserFilteredByEmail(string filters)
+        {
+            if (string.IsNullOrEmpty(filters))
+                throw new ArgumentException("Email deve ser informado.");
+
+            return await _repository.GetUserFilteredByEmail(filters);
+        }
+
     }
 }

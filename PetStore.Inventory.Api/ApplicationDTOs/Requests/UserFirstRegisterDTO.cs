@@ -9,7 +9,7 @@ namespace PetStore.Inventory.Api.ApplicationDTOs.Requests
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public EUserRoles RoleId { get; set; }
+        public int RoleId { get; set; }
 
         public UserFirstRegisterDTO() { }
         public UserRegisterRequest ToBusinessRequest()
@@ -19,7 +19,7 @@ namespace PetStore.Inventory.Api.ApplicationDTOs.Requests
                 Nickname,
                 Email,
                 Password,
-                RoleId
+                (EUserRoles)RoleId
             );
         }
     }

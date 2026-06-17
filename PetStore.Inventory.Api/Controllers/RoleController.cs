@@ -51,6 +51,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis filtrados retornados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum papel encontrado para o filtro especificado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao recuperar os papéis filtrados.")]
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+
         [HttpGet("get-all-filtered-by-string")]
         public async Task<IActionResult> GetRolesFilteredByString(string filters)
         {
@@ -78,6 +81,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis filtrados retornados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum papel encontrado para o filtro especificado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao recuperar os papéis filtrados.")]
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+
         [HttpGet("get-all-filtered-by-id")]
         public async Task<IActionResult> GetRolesFilteredById(int filters)
         {
@@ -104,6 +110,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria um novo papel (role) no sistema.", Description = "O papel é uma entidade que representa um conjunto de permissões ou responsabilidades dentro da aplicação. Este endpoint recebe um objeto RoleDTO contendo as informações necessárias para criar o papel, como o nome e a descrição do papel. O serviço de criação de papéis é chamado para processar a solicitação e criar o novo papel no banco de dados. Se a criação for bem-sucedida, o endpoint retorna um status 200 OK; Caso contrário, retorna um status 500 Internal Server Error com uma mensagem de erro detalhada.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Papel criado com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao criar o papel.")]
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+
         [HttpPost("create-role")]
         public async Task<IActionResult> CreateRoles(RoleDTO data)
         {
@@ -126,6 +135,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis padrões criados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao criar os papéis padrões.")]
         [ApiExplorerSettings(IgnoreApi = true)]
+      
         [HttpPost("create-pattern-roles")]
         public async Task<IActionResult> CreatePatternRoles()
         {

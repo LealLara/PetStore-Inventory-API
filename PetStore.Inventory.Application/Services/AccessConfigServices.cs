@@ -9,12 +9,14 @@ namespace PetStore.Inventory.Application.Services
         private readonly IAccessConfigRepository _accessConfigRepository;
         private readonly IRoleServices _roleServices;
         private readonly ILogTypeServices _logTypeServices;
+        private readonly IUserServices _userServices;
 
-        public AccessConfigServices(IAccessConfigRepository accessConfigRepository, IRoleServices roleServices, ILogTypeServices logTypeServices)
+        public AccessConfigServices(IAccessConfigRepository accessConfigRepository, IRoleServices roleServices, ILogTypeServices logTypeServices, IUserServices userServices)
         {
             _accessConfigRepository = accessConfigRepository;
             _roleServices = roleServices;
             _logTypeServices = logTypeServices;
+            _userServices = userServices;
         }
 
         public async Task<bool> StartApp()
@@ -26,6 +28,7 @@ namespace PetStore.Inventory.Application.Services
             if (success)
             {
                 await CreatePatternLogTypes();
+                await CreatePatternUsers();
             }
             else
             {
@@ -42,5 +45,11 @@ namespace PetStore.Inventory.Application.Services
         {
             return await _logTypeServices.CreatePatternLogTypes();
         }
+
+        private async Task<bool> CreatePatternUsers()
+        {
+            return await _userServices.CreatePatternUsers();
+        }
+
     }
 }

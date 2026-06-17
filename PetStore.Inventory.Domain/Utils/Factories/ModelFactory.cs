@@ -37,11 +37,20 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 RoleId = (EUserRoles)u.RoleId
             }) ?? Enumerable.Empty<UserRegisterModel>();
         }
+        public static UserRegisterModel CreateUser(UserEntity userEntity)
+        {
+            if (userEntity == null)
+                return null;
 
-
-
-
-
-
+            return new UserRegisterModel
+            {
+                UserId = userEntity.UserId,
+                FullName = userEntity.FullName,
+                Nickname = userEntity.Nickname,
+                Email = userEntity.Email,
+                Password = userEntity.Password,
+                RoleId = (EUserRoles)userEntity.RoleId
+            };
+        }
     }
 }
