@@ -7,8 +7,8 @@ namespace PetStore.Inventory.Domain.Interfaces.Services
     {
         Task<IEnumerable<UserRegisterModel>> GetAllUsers();
         Task<bool> CreatePatternUsers();
-        Task<bool> CreateUser(UserRegisterRequest userRequest);
-        Task<IEnumerable<UserRegisterModel>> GetUsersFilteredById(int userId);
+        Task<UserRegisterModel> CreateUser(UserRegisterRequest userRequest);
+        Task<UserRegisterModel> GetUsersFilteredById(int userId);
         Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByRoleId(int roleId);
         Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByString(string filters);
         Task<UserRegisterModel> GetUserFilteredByEmail(string filters);

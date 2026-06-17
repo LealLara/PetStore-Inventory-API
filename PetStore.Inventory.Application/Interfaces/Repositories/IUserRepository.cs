@@ -9,11 +9,11 @@ namespace PetStore.Inventory.Application.Interfaces.Repositories
 
         Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByString(string filters);
 
-        Task<IEnumerable<UserRegisterModel>> GetUsersFilteredById(int id);
+        Task<UserRegisterModel> GetUsersFilteredById(int id);
 
         Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByRoleId(int roleId);
 
-        Task<bool> CreateUser(UserEntity userData);
+        Task<UserRegisterModel> CreateUser(UserEntity userData);
 
         Task<bool> CreatePatternUsers(List<UserEntity> userEntities);
         Task<UserRegisterModel> GetUserFilteredByEmail(string filters);

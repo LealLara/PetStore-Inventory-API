@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PetStore.Inventory.Api.ApplicationDTOs.Requests;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PetStore.Inventory.Api.ApplicationDTOs.Requests; 
 using PetStore.Inventory.Application.Interfaces.Services;
+using PetStore.Inventory.Domain.BusinessModel;
+using PetStore.Inventory.Domain.Utils.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PetStore.Inventory.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class LoginController : ControllerBase
     {
         private readonly ILoginServices _authService;
@@ -24,9 +28,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Autenticação bem-sucedida, token JWT retornado")]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, "Credenciais inválidas")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor")]
-        
-        [ApiExplorerSettings(IgnoreApi = true)]
 
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO dto)
         {
@@ -44,35 +48,30 @@ namespace PetStore.Inventory.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.ToString());
             }
         }
-
         /// <summary>
-        /// Realiza o logoff de um usuário, invalidando seu token JWT.
+        /// Retorna todos os logins cadastrados no sistema. Apenas usuários com a função ADMIN podem acessar este endpoint.
         /// </summary>
-        /// <param name="userId">ID do usuário que deseja realizar o logoff.</param>
-        /// <returns>Resultado da operação de logoff.</returns>
-        [SwaggerOperation(Summary = "Realiza o logoff de um usuário", Description = "Invalida o token JWT do usuário")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Logoff realizado com sucesso")]
-        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não foi possível realizar o logoff")]
+        /// <returns>Lista de logins cadastrados.</returns>
+        [SwaggerOperation(Summary = "Retorna todos os logins cadastrados", Description = "Apenas usuários com a função ADMIN podem acessar este endpoint")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Lista de logins retornada com sucesso", typeof(IEnumerable<LoginModel>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor")]
-        
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Credenciais inválidas")]
+        [SwaggerResponse(StatusCodes.Status403Forbidden, "Acesso negado. Apenas usuários com a função ADMIN podem acessar este endpoint")]
 
-        [HttpPost("logoff")]
-        public async Task<IActionResult> Logoff(int userId)
+        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
+
+        [HttpGet("get-all-logins")]
+        public async Task<IActionResult> GetAllLogins()
         {
             try
             {
-                bool result = await _authService.Logoff(userId);
-                if (!result)
-                {
-                    return Unauthorized("Não foi possível realizar o logoff.");
-                }
-                return Ok("Logoff realizado com sucesso.");
+                IEnumerable<LoginModel> logins = await _authService.GetAllLogins();
+                return Ok(logins);
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.ToString());
             }
-        } 
+        }
     }
 }

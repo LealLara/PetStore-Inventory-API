@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetStore.Inventory.Api.ApplicationDTOs.Requests;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
@@ -8,7 +9,7 @@ namespace PetStore.Inventory.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-
+    [Authorize]
     public class LogTypeController : ControllerBase
     {
         private readonly ILogTypeServices _service;
@@ -25,6 +26,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Lista de tipos de log retornada com sucesso", typeof(IEnumerable<LogTypeModel>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum tipo de log encontrado para o filtro especificado", typeof(string))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao recuperar os tipos de log", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
         [ApiExplorerSettings(IgnoreApi = true)]
 
@@ -55,7 +57,8 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Lista de tipos de log filtrada retornada com sucesso", typeof(IEnumerable<LogTypeModel>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum tipo de log encontrado para o filtro especificado", typeof(string))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao recuperar os tipos de log", typeof(string))]
-        
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
         [ApiExplorerSettings(IgnoreApi = true)]
         
         [HttpGet("get-all-filtered-by-string")]
@@ -85,7 +88,8 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Lista de tipos de log filtrada retornada com sucesso", typeof(IEnumerable<LogTypeModel>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum tipo de log encontrado para o filtro especificado", typeof(string))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao recuperar os tipos de log", typeof(string))]
-       
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
         [ApiExplorerSettings(IgnoreApi = true)]
        
         [HttpGet("get-all-filtered-by-id")]
@@ -114,7 +118,8 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria tipos de log", Description = "Cria tipos de log no sistema")]
         [SwaggerResponse(StatusCodes.Status200OK, "Tipos de log criados com sucesso")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao criar os tipos de log", typeof(string))]
-        
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
         [ApiExplorerSettings(IgnoreApi = true)]
        
         [HttpPost("create-log-type")]
@@ -138,7 +143,8 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria tipos de log padrão", Description = "Cria tipos de log padrão pré-definidos.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Tipos de log padrão criados com sucesso")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao criar os tipos de log padrão", typeof(string))]
-        
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
         [ApiExplorerSettings(IgnoreApi = true)]
         
         [HttpPost("create-pattern-log-types")]

@@ -1,14 +1,12 @@
 ﻿using PetStore.Inventory.Application.ApplicationModel.Requests;
-using PetStore.Inventory.Application.BusinessDTOs.Requests;
-using PetStore.Inventory.Application.BusinessDTOs.Results;
+using PetStore.Inventory.Domain.BusinessModel;
 
 namespace PetStore.Inventory.Application.Interfaces.Services
 {
     public interface IAccessRegisterServices
     {
-        Task<bool> CreateAccessRegister(UserRegisterRequest request);
-        Task<string> Login(LoginRegisterRequest request);
-        Task<bool> Logoff(int userId);
+        Task<UserRegisterModel> CreateAccessRegister(UserRegisterRequest request);
+        Task<string> Login(LoginRegisterRequest request); 
         Task<bool> RemoveUser(int userId);
     }
 }

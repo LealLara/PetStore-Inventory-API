@@ -5,10 +5,10 @@ namespace PetStore.Inventory.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<UserEntity> UsersTable => Set<UserEntity>();
-        public DbSet<RoleEntity> RolesTable => Set<RoleEntity>();
-        public DbSet<LogTypeEntity> LogTypesTable => Set<LogTypeEntity>();
-
+        public DbSet<UserEntity> UserTable => Set<UserEntity>();
+        public DbSet<RoleEntity> RoleTable => Set<RoleEntity>();
+        public DbSet<LogTypeEntity> LogTypeTable => Set<LogTypeEntity>();
+        public DbSet<LoginEntity> LoginTable => Set<LoginEntity>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
           : base(options)

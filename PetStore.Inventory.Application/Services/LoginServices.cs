@@ -1,49 +1,106 @@
-﻿using PetStore.Inventory.Application.BusinessDTOs.Requests;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using PetStore.Inventory.Application.ApplicationModel.Requests;
+using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
+using PetStore.Inventory.Domain.BusinessModel;
+using PetStore.Inventory.Domain.Interfaces.Services;
+using PetStore.Inventory.Domain.Utils.Enums;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace PetStore.Inventory.Application.Services
 {
     public class LoginServices : ILoginServices
     {
-        public Task<string> Login(LoginRegisterRequest data)
+        private readonly ILoginRepository _repository;
+        private readonly IUserServices _userServices;
+        private readonly string _key;
+        public LoginServices(ILoginRepository loginRepository, IConfiguration configuration, IUserServices userServices)
         {
+            _repository = loginRepository;
+            _key = configuration["Jwt:Key"];
+            _userServices = userServices;
+        }
+        public async Task<bool> CreatePatternLogin()
+        {
+            LoginRegisterRequest request = new();
 
+            bool success = await _repository.CreatePatternLogin(request.SetPatternLogin().Select(loginModel => loginModel.ToEntity()).ToList());
 
-            /* User? user = await _userRepository.GetByNicknameAsync(nick);
-             if (user == null)
-             {
-                 return new Success(
-                 successFlag: false,
-                 message: Messages.UserNotFound,
-                 logId: 0,
-                 data: new List<object>()
-             );
-             }
-             string hash = await _userRepository.GetHash(nick);
+            return success ? success : throw new Exception("Falha ao criar os registros iniciais de login.");
+        }
+        public async Task<LoginModel> CreateLogin(LoginRegisterRequest request)
+        {
+            PasswordHasher<LoginModel> hasher = new();
 
-             if (hash == null || !BCrypt.Net.BCrypt.Verify(password, hash))
-                 throw new Exception(Messages.InvalidCredentials);
+            LoginModel loginModel = request.BuildLoginCreationData(request.Nickname, request.Password, request.UserId).ToModel();
 
-             string token = await _tokenService.GenerateToken(hash);
+            loginModel.Password = hasher.HashPassword(loginModel, request.Password);
 
-             if (string.IsNullOrEmpty(token))
-                 throw new Exception(Messages.TokenGenerationError);
+            return await _repository.CreateLogin(loginModel.ToEntity());
+        }
+        public async Task<string?> Login(LoginRegisterRequest request)
+        {
+            PasswordHasher<LoginModel> hasher = new();
 
-             LogEntity logBody = new(logMessage: $"{Messages.UserLoggedIn} {nick}",
-                          logTypeId: (int)ELogType.Login,
-                          userId: user.UserId
-             );
+            if (request is null ||
+                string.IsNullOrWhiteSpace(request.Nickname) ||
+                string.IsNullOrWhiteSpace(request.Password))
+                return null;
 
-             Log? log = await _logRepository.AddLog(logBody);
+            LoginModel? login = await _repository.GetByNickname(request.Nickname.Trim());
 
-             return new Success(true, $"{Messages.UserLoggedIn} {nick}", log.LogId, new List<object> { token });
-         }*/
+            if (login is null)
+                return null;
 
+            PasswordVerificationResult result = hasher.VerifyHashedPassword(
+             login,
+             login.Password,
+             request.Password
+            );
+
+            if (result == PasswordVerificationResult.Failed)
+                return null;
+
+            return await GenerateJwt(login);
+        }
+        private async Task<string> GenerateJwt(LoginModel login)
+        {
+            JwtSecurityTokenHandler handler = new();
+
+            byte[] key = Encoding.ASCII.GetBytes(_key);
+
+            UserRegisterModel user =  await _userServices.GetUsersFilteredById(login.UserId);
+
+            SecurityTokenDescriptor descriptor = new()
+            {
+                Subject = new ClaimsIdentity(
+                [
+                    new Claim(ClaimTypes.NameIdentifier, login.UserId.ToString()),
+            new Claim(ClaimTypes.Name, login.Nickname),
+            new Claim(
+                ClaimTypes.Role,
+                ((EUserRoles)user.RoleId).ToString())
+                ]),
+
+                Expires = DateTime.UtcNow.AddHours(8),
+
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            SecurityToken token = handler.CreateToken(descriptor);
+
+            return  handler.WriteToken(token);
         }
 
-        public Task<bool> Logoff(int userId)
+        public async Task<IEnumerable<LoginModel>> GetAllLogins()
         {
-            throw new NotImplementedException();
+            return await _repository.GetAllLogins();
         }
     }
 }

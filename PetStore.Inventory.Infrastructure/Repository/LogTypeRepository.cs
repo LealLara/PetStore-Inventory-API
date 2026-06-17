@@ -17,7 +17,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         }
         public async Task<bool> CreateLogType(LogTypeEntity logTypeRequest)
         {
-            _context.LogTypesTable.Add(logTypeRequest);
+            _context.LogTypeTable.Add(logTypeRequest);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -25,7 +25,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                _context.LogTypesTable.AddRange(logTypeEntities);
+                _context.LogTypeTable.AddRange(logTypeEntities);
                 return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<LogTypeEntity> logTypes = _context.LogTypesTable.AsNoTracking();
+                IQueryable<LogTypeEntity> logTypes = _context.LogTypeTable.AsNoTracking();
 
                 return ModelFactory.CreateLogTypes(logTypes);
             }
@@ -52,7 +52,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<LogTypeEntity> logTypes = _context.LogTypesTable.Where(l => l.LogTypeId == filters);
+                IQueryable<LogTypeEntity> logTypes = _context.LogTypeTable.Where(l => l.LogTypeId == filters);
 
                 return ModelFactory.CreateLogTypes(logTypes);
             }
@@ -66,7 +66,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<LogTypeEntity> logTypes = _context.LogTypesTable.Where(l => l.LogTypeName.ToLower().Contains(filters.ToLower()));
+                IQueryable<LogTypeEntity> logTypes = _context.LogTypeTable.Where(l => l.LogTypeName.ToLower().Contains(filters.ToLower()));
 
                 return ModelFactory.CreateLogTypes(logTypes);
             }

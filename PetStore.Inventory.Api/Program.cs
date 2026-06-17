@@ -9,8 +9,9 @@ using PetStore.Inventory.Application.Services;
 using PetStore.Inventory.Domain.Interfaces.Services;
 using PetStore.Inventory.Infrastructure.Data;
 using PetStore.Inventory.Infrastructure.Repository;
+using System.Security.Claims;
 using System.Text;
-using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;  
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +62,7 @@ builder.Services.AddScoped<ILogTypeServices, LogTypeServices>();
 builder.Services.AddScoped<IRoleServices, RoleServices>();
 builder.Services.AddScoped<IAccessRegisterServices, AccessRegisterServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<ILoginServices, LoginServices>();
 //builder.Services.AddScoped<ITokenService, TokenService>();
 #endregion
 
@@ -70,22 +72,11 @@ builder.Services.AddScoped<IAccessRegisterRepository, AccessRegisterRepository>(
 builder.Services.AddScoped<ILogTypeRepository, LogTypeRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
 
 //builder.Services.AddScoped<IAccessRepository, AccessRepository>();
 #endregion
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -94,6 +85,23 @@ builder.Services.AddControllers().AddJsonOptions(options =>
         new JsonStringEnumConverter());
 });
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+
+            RoleClaimType = ClaimTypes.Role
+        };
+    });
 
 var app = builder.Build();
 

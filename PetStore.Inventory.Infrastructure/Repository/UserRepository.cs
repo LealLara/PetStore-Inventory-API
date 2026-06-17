@@ -15,12 +15,13 @@ namespace PetStore.Inventory.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<bool> CreateUser(UserEntity userData)
+        public async Task<UserRegisterModel> CreateUser(UserEntity userData)
         {
             try
             {
-                _context.UsersTable.Add(userData);
-                return await _context.SaveChangesAsync() > 0;
+                _context.UserTable.Add(userData);
+                await _context.SaveChangesAsync();
+                return ModelFactory.CreateUser(userData);
             }
             catch (Exception ex)
             {
@@ -32,7 +33,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                _context.UsersTable.AddRange(userEntities);
+                _context.UserTable.AddRange(userEntities);
                 return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
@@ -45,7 +46,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<UserEntity> users = _context.UsersTable.AsNoTracking();
+                IQueryable<UserEntity> users = _context.UserTable.AsNoTracking();
 
                 return ModelFactory.CreateUsers(users);
             }
@@ -59,7 +60,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<UserEntity> users = _context.UsersTable.Where(r => r.FullName.ToLower().Contains(filters.ToLower()) || r.Nickname.ToLower().Contains(filters.ToLower()));
+                IQueryable<UserEntity> users = _context.UserTable.Where(r => r.FullName.ToLower().Contains(filters.ToLower()) || r.Nickname.ToLower().Contains(filters.ToLower()));
 
                 return ModelFactory.CreateUsers(users);
             }
@@ -69,13 +70,13 @@ namespace PetStore.Inventory.Infrastructure.Repository
             }
         }
 
-        public async Task<IEnumerable<UserRegisterModel>> GetUsersFilteredById(int filters)
+        public async Task<UserRegisterModel> GetUsersFilteredById(int userId)
         {
             try
             {
-                IQueryable<UserEntity> users = _context.UsersTable.AsNoTracking().Where(r => r.UserId == filters);
+            UserEntity? user = await _context.UserTable.AsNoTracking().FirstOrDefaultAsync(r => r.UserId == userId);
 
-                return ModelFactory.CreateUsers(users);
+                return ModelFactory.CreateUser(user);
             }
             catch (Exception ex)
             {
@@ -87,7 +88,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<UserEntity> users = _context.UsersTable.AsNoTracking().Where(r => r.RoleId == filters);
+                IQueryable<UserEntity> users = _context.UserTable.AsNoTracking().Where(r => r.RoleId == filters);
 
                 return ModelFactory.CreateUsers(users);
             }
@@ -101,7 +102,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                UserEntity? users = await _context.UsersTable.FirstOrDefaultAsync(r => r.Email.Contains(filters));
+                UserEntity? users = await _context.UserTable.FirstOrDefaultAsync(r => r.Email.Contains(filters));
                  
                 return ModelFactory.CreateUser(users);
             }

@@ -19,7 +19,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                _context.RolesTable.AddRange(roleEntities);
+                _context.RoleTable.AddRange(roleEntities);
                 return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
@@ -32,7 +32,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                _context.RolesTable.Add(roleRequest);
+                _context.RoleTable.Add(roleRequest);
                 return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<RoleEntity> roles = _context.RolesTable.AsNoTracking();
+                IQueryable<RoleEntity> roles = _context.RoleTable.AsNoTracking();
 
                 return ModelFactory.CreateRoles(roles);
             }
@@ -59,7 +59,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<RoleEntity> roles = _context.RolesTable.Where(r => r.RoleName.ToLower().Contains(filters.ToLower())); 
+                IQueryable<RoleEntity> roles = _context.RoleTable.Where(r => r.RoleName.ToLower().Contains(filters.ToLower())); 
 
                 return ModelFactory.CreateRoles(roles);
             }
@@ -72,7 +72,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                IQueryable<RoleEntity> roles = _context.RolesTable.AsNoTracking().Where(r => r.RoleId == filters);
+                IQueryable<RoleEntity> roles = _context.RoleTable.AsNoTracking().Where(r => r.RoleId == filters);
 
                 return ModelFactory.CreateRoles(roles);
             }

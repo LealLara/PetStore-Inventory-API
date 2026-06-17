@@ -37,12 +37,37 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 RoleId = (EUserRoles)u.RoleId
             }) ?? Enumerable.Empty<UserRegisterModel>();
         }
+        public static IEnumerable<LoginModel> CreateLogins(IQueryable<LoginEntity> loginEntities)
+        {
+            return loginEntities?.Select(l => new LoginModel
+            {
+                LoginId = l.LoginId,
+                Nickname = l.Nickname,
+                Password = l.Password,
+                UserId = l.UserId
+            }) ?? Enumerable.Empty<LoginModel>();
+        }
+
+        public static LoginModel CreateLogin(LoginEntity loginEntity)
+        {
+            if (loginEntity == null)
+                return null;
+
+            return new ()
+            {
+                LoginId = loginEntity.LoginId,
+                Nickname = loginEntity.Nickname,
+                Password = loginEntity.Password,
+                UserId = loginEntity.UserId
+            };
+        }
+
         public static UserRegisterModel CreateUser(UserEntity userEntity)
         {
             if (userEntity == null)
                 return null;
 
-            return new UserRegisterModel
+            return new ()
             {
                 UserId = userEntity.UserId,
                 FullName = userEntity.FullName,

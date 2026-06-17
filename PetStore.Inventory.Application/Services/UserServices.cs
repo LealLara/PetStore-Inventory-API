@@ -35,7 +35,7 @@ namespace PetStore.Inventory.Application.Services
             return false;
         }
 
-        public async Task<bool> CreateUser(UserRegisterRequest userRequest)
+        public async Task<UserRegisterModel> CreateUser(UserRegisterRequest userRequest)
         {
             IEnumerable<RoleModel> roleList = await _roleServices.GetAllRoles();
             if (!roleList.Any())
@@ -60,7 +60,7 @@ namespace PetStore.Inventory.Application.Services
             return await _repository.CreateUser(userRequest.ToEntity());
         }
 
-        public async Task<IEnumerable<UserRegisterModel>> GetUsersFilteredById(int userId)
+        public async Task<UserRegisterModel> GetUsersFilteredById(int userId)
         {
             if (userId <= 0)
                 throw new ArgumentException("O ID do usuário deve ser informado.");

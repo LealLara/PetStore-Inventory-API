@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetStore.Inventory.Api.ApplicationDTOs.Requests;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
@@ -8,6 +9,7 @@ namespace PetStore.Inventory.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class RoleController : ControllerBase
     {
         private readonly IRoleServices _service;
@@ -24,6 +26,8 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis retornados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum papel encontrado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao recuperar os papéis.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
@@ -51,6 +55,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis filtrados retornados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum papel encontrado para o filtro especificado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao recuperar os papéis filtrados.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
         [ApiExplorerSettings(IgnoreApi = true)]
 
@@ -81,6 +86,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis filtrados retornados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum papel encontrado para o filtro especificado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao recuperar os papéis filtrados.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
         [ApiExplorerSettings(IgnoreApi = true)]
 
@@ -110,6 +116,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria um novo papel (role) no sistema.", Description = "O papel é uma entidade que representa um conjunto de permissões ou responsabilidades dentro da aplicação. Este endpoint recebe um objeto RoleDTO contendo as informações necessárias para criar o papel, como o nome e a descrição do papel. O serviço de criação de papéis é chamado para processar a solicitação e criar o novo papel no banco de dados. Se a criação for bem-sucedida, o endpoint retorna um status 200 OK; Caso contrário, retorna um status 500 Internal Server Error com uma mensagem de erro detalhada.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Papel criado com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao criar o papel.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
         [ApiExplorerSettings(IgnoreApi = true)]
 
@@ -134,6 +141,8 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria os papéis padrões no banco de dados, caso eles não existam.", Description = "Este endpoint é útil para inicializar o sistema com os papéis necessários para o funcionamento adequado da aplicação. Este endpoint está privado, servindo apenas para uso interno.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis padrões criados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao criar os papéis padrões.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
         [ApiExplorerSettings(IgnoreApi = true)]
       
         [HttpPost("create-pattern-roles")]

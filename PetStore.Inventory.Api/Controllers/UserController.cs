@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetStore.Inventory.Api.ApplicationDTOs.Requests;
 using PetStore.Inventory.Application.ApplicationModel.Requests;
 using PetStore.Inventory.Domain.BusinessModel;
 using PetStore.Inventory.Domain.Interfaces.Services;
+using PetStore.Inventory.Domain.Utils.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PetStore.Inventory.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserServices _services;
@@ -26,7 +29,10 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
-      
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
+        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
+
         [HttpGet("get-all-users")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -53,6 +59,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado com o ID de papel fornecido.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
         [HttpGet("get-all-filtered-by-role-id")]
         public async Task<IActionResult> GetUsersFilteredByRoleId(int roleId)
@@ -83,6 +90,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado com os filtros aplicados.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
+        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
 
         [HttpGet("get-all-filtered-by-string")]
         public async Task<IActionResult> GetUsersFilteredByString(string filters)
@@ -113,26 +123,29 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários recuperados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum usuário encontrado com o ID fornecido.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
         [ApiExplorerSettings(IgnoreApi = true)]
+
+        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
 
         [HttpGet("get-all-filtered-by-user-id")]
         public async Task<IActionResult> GetUsersFilteredById(int userId)
         {
             try
             {
-                IEnumerable<UserRegisterModel> users = await _services.GetUsersFilteredById(userId);
+                UserRegisterModel user = await _services.GetUsersFilteredById(userId);
 
-                if (users == null || !users.Any())
+                if (user == null)
                 {
-                    return NotFound($"Nenhum usuário encontrado com o ID {userId}.");
+                    return NotFound($"Usuário não encontrado com o ID {userId}.");
                 }
 
-                return Ok(users);
+                return Ok(user);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao recuperar os usuários: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao recuperar os usuário: {ex.Message}");
             }
         }
 
@@ -147,8 +160,9 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Usuário criado com sucesso.")]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Dados do usuário inválidos.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [ApiExplorerSettings(IgnoreApi = true)] 
 
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser(UserFirstRegisterDTO userRequest)
@@ -156,10 +170,10 @@ namespace PetStore.Inventory.Api.Controllers
             try
             {
 
-                bool result = await _services.CreateUser(userRequest.ToBusinessRequest());
-                if (result)
+                UserRegisterModel result = await _services.CreateUser(userRequest.ToBusinessRequest());
+                if (result != null)
                 {
-                    return Ok("Usuário criado com sucesso.");
+                    return Ok(result);
                 }
                 else
                 {
@@ -181,9 +195,12 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Cria os usuários padrões no banco de dados, caso eles não existam.", Description = "Este endpoint é útil para inicializar o sistema com os usuários necessários para o funcionamento adequado da aplicação. Este endpoint está privado, servindo apenas para uso interno.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Usuários padrões criados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao criar os usuários padrões.")]
-        
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+
         [ApiExplorerSettings(IgnoreApi = true)]
-       
+
+        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
+
         [HttpPost("create-pattern-users")]
         public async Task<IActionResult> CreatePatternUsers()
         {

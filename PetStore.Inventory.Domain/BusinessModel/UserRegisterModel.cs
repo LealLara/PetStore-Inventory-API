@@ -5,13 +5,13 @@ namespace PetStore.Inventory.Domain.BusinessModel
 {
     public class UserRegisterModel
     {
-        public int UserId{ get; set; }
+        public int UserId { get; set; }
         public string FullName { get; set; }
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public EUserRoles RoleId { get; set; }
-        public UserRegisterModel(){}
+        public UserRegisterModel() { }
         public UserRegisterModel(string fullName, string nickname, string email, string password, EUserRoles roleId)
         {
             FullName = fullName;
@@ -34,15 +34,11 @@ namespace PetStore.Inventory.Domain.BusinessModel
             return new(
                 id: UserId,
                 name: FullName,
-            nickname : Nickname,
-
-        email: Email,
+                nickname: Nickname,
+                email: Email,
                 passwordHash: Password,
                 roleId: (int)RoleId
             );
         }
-
-
-
     }
 }

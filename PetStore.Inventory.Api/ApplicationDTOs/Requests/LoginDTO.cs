@@ -1,4 +1,4 @@
-﻿using PetStore.Inventory.Application.BusinessDTOs.Requests;
+﻿using PetStore.Inventory.Application.ApplicationModel.Requests;
 
 namespace PetStore.Inventory.Api.ApplicationDTOs.Requests
 {
