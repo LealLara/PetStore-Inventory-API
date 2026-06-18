@@ -1,4 +1,6 @@
-﻿namespace PetStore.Inventory.Application.ApplicationModel.Requests
+﻿using PetStore.Inventory.Domain.BusinessModel;
+
+namespace PetStore.Inventory.Application.ApplicationModel.Requests
 {
     public class OrderItemRequest
     {
@@ -12,21 +14,14 @@
             ProductId = productId;
             Quantity = quantity;
         }
-    }
 
-    public class OrderCreateRequest
-    {
-        public string CustomerDocument { get; set; } = string.Empty;
-        public string SellerName { get; set; } = string.Empty;
-        public List<OrderItemRequest> Items { get; set; } = new();
-
-        public OrderCreateRequest() { }
-
-        public OrderCreateRequest(string customerDocument, string sellerName, List<OrderItemRequest> items)
+        public OrderItemModel ToModel()
         {
-            CustomerDocument = customerDocument;
-            SellerName = sellerName;
-            Items = items;
+            return new OrderItemModel
+            {
+                ProductId = ProductId,
+                Quantity = Quantity
+            };
         }
     }
 }

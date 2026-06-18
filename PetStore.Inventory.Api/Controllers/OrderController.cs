@@ -58,9 +58,9 @@ namespace PetStore.Inventory.Api.Controllers
         /// </summary>
         [SwaggerOperation(Summary = "Recupera todos os pedidos.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Pedidos recuperados com sucesso.", typeof(IEnumerable<OrderModel>))]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Usuário não autenticado.")]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]  
 
-       
         [HttpGet("get-all-orders")]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -81,6 +81,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Recupera um pedido pelo ID.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Pedido recuperado com sucesso.", typeof(OrderModel))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Pedido não encontrado.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Usuário não autenticado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
 
         [HttpGet("get-order-by-id")]
@@ -104,6 +105,7 @@ namespace PetStore.Inventory.Api.Controllers
         /// </summary>
         [SwaggerOperation(Summary = "Recupera pedidos por vendedor.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Pedidos recuperados com sucesso.", typeof(IEnumerable<OrderModel>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Usuário não autenticado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
 
         [HttpGet("get-orders-by-seller")]

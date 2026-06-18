@@ -80,6 +80,9 @@ namespace PetStore.Inventory.Api.Controllers
         /// </summary>
         /// <param name="id">ID do produto a ser filtrado.</param>
         /// <returns>Retorna os produtos filtrados pelo ID.</returns>
+        [SwaggerOperation(Summary = "Recupera os produtos cadastrados no sistema filtrados pelo id fornecido.", Description = "O Id será utilizado para buscar produtos cujo Id tenha o mesmo valor especificado.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Produtos recuperados com sucesso.", typeof(ProductModel))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor ao recuperar os produtos.")]
         [HttpGet("get-products-filtered-by-id")]
         public async Task<IActionResult> GetAllProductsFilteredById(int id)
         {

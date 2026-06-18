@@ -61,7 +61,7 @@ namespace PetStore.Inventory.Application.Services
             {
                 if (nicknameAreadyExists.Nickname == userRequest.Nickname)
                 {
-                    throw new Exception("O apelido informado já está em uso.");
+                    throw new Exception("O nickname informado já está em uso.");
                 }
 
             }

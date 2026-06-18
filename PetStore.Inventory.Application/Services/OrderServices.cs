@@ -1,8 +1,10 @@
-﻿using PetStore.Inventory.Application.ApplicationModel.Requests;
+﻿using FluentValidation;
+using PetStore.Inventory.Application.ApplicationModel.Requests;
 using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
 using PetStore.Inventory.Domain.Entities;
+using PetStore.Inventory.Domain.Utils.Validations;
 
 namespace PetStore.Inventory.Application.Services
 {
@@ -17,36 +19,28 @@ namespace PetStore.Inventory.Application.Services
             _productRepository = productRepository;
         }
 
+
         public async Task<OrderModel> CreateOrderAsync(OrderCreateRequest request)
-        { 
-            if (string.IsNullOrWhiteSpace(request.CustomerDocument))
-                throw new ArgumentException("O documento do cliente é obrigatório.");
+        {
+            new OrderValidation().ValidateAndThrow(request.ToModel());
 
-            if (string.IsNullOrWhiteSpace(request.SellerName))
-                throw new ArgumentException("O nome do vendedor é obrigatório.");
-
-            if (request.Items == null || !request.Items.Any())
-                throw new ArgumentException("O pedido deve conter pelo menos um item.");
-
-            var orderItems = new List<OrderItemEntity>();
+            List<OrderItemEntity> orderItems = new();
             decimal totalAmount = 0;
-             
+
             foreach (var itemRequest in request.Items)
-            { 
-                var product = await _productRepository.GetAllProductsFilteredById(itemRequest.ProductId);
-                if (product == null)
-                    throw new ArgumentException($"Produto com ID {itemRequest.ProductId} não encontrado.");
-                 
+            {
+                ProductModel product = await _productRepository.GetAllProductsFilteredById(itemRequest.ProductId)
+                    ?? throw new ArgumentException($"Produto com ID {itemRequest.ProductId} não encontrado.");
+
                 if (product.StockQuantity < itemRequest.Quantity)
                     throw new InvalidOperationException(
                         $"Estoque insuficiente para o produto '{product.ProductName}'. " +
                         $"Disponível: {product.StockQuantity}, Solicitado: {itemRequest.Quantity}");
-                 
-                ProductModel productModel = new();
-                productModel.RemoveStock(itemRequest.Quantity);
-                await _productRepository.UpdateProduct(productModel.ToEntity());
 
-                OrderItemEntity orderItem = new(
+                product.RemoveStock(itemRequest.Quantity);
+                await _productRepository.UpdateProduct(product.ToEntity());
+
+                var orderItem = new OrderItemEntity(
                     product.ProductId,
                     itemRequest.Quantity,
                     (decimal)product.Price
