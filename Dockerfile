@@ -1,5 +1,4 @@
 # ===== ESTÁGIO 1: BASE (Runtime) =====
-# Imagem base para rodar a aplicação
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
@@ -9,7 +8,6 @@ EXPOSE 8081
 RUN mkdir -p /data && chmod 777 /data
 
 # ===== ESTÁGIO 2: BUILD =====
-# Imagem SDK para compilar o código
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
@@ -44,9 +42,6 @@ ENV ConnectionStrings__DefaultConnection="Data Source=/data/PetStore.db"
 
 # Copiar arquivos publicados
 COPY --from=publish /app/publish .
-
-# Usuário não-root para segurança
-USER $APP_UID
 
 # Ponto de entrada
 ENTRYPOINT ["dotnet", "PetStore.Inventory.Api.dll"]
