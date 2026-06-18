@@ -99,12 +99,12 @@ namespace PetStore.Inventory.Application.Services
 
         [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
 
-        [HttpPost("delete-account")]
-        public async Task<IActionResult> RemoveUser(int userId)
+        [HttpDelete("delete-account")]
+        public async Task<IActionResult> RemoveAccount(int userId)
         {
             try
             {
-                bool success = await _service.RemoveUser(userId);
+                bool success = await _service.RemoveAccount(userId);
 
                 return success ? Ok(StatusCodes.Status200OK) : NotFound("Usuário não encontrado.");
             }

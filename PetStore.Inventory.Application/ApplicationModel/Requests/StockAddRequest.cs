@@ -1,4 +1,7 @@
-﻿namespace PetStore.Inventory.Application.ApplicationModel.Requests
+﻿using PetStore.Inventory.Domain.BusinessModel;
+using PetStore.Inventory.Domain.Entities;
+
+namespace PetStore.Inventory.Application.ApplicationModel.Requests
 {
     public class StockAddRequest
     {
@@ -13,6 +16,23 @@
             ProductId = productId;
             Quantity = quantity;
             InvoiceNumber = invoiceNumber;
+        }
+        public StockMovementModel ToModel()
+        {
+            return new(
+                ProductId,
+                Quantity,
+                InvoiceNumber
+            );
+        }
+
+        public StockMovementEntity ToEntity()
+        {
+            return new(
+                ProductId,
+                Quantity,
+                InvoiceNumber
+            );
         }
     }
 }

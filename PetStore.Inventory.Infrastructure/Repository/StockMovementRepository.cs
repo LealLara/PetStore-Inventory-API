@@ -61,18 +61,5 @@ namespace PetStore.Inventory.Infrastructure.Repository
                 throw new Exception($"Falha ao obter produto com estoque: {ex.Message}");
             }
         }
-
-        public async Task<bool> UpdateProductStock(ProductEntity entity)
-        {
-            try
-            {
-                _context.ProductTable.Update(entity);
-                return await _context.SaveChangesAsync() > 0;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Falha ao atualizar estoque do produto: {ex.Message}");
-            }
-        }
     }
 }

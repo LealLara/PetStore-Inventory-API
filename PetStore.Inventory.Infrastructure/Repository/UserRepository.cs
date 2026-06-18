@@ -125,5 +125,23 @@ namespace PetStore.Inventory.Infrastructure.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<bool> RemoveUser(int userId)
+        {
+            try
+            {
+                UserEntity? user = await _context.UserTable.AsNoTracking().FirstOrDefaultAsync(r => r.UserId == userId);
+
+                if (user is not null)
+                {
+                    return false;                    
+                }
+                _context.UserTable.Remove(user);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }        
     }
 }

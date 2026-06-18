@@ -39,7 +39,7 @@ namespace PetStore.Inventory.Api.Controllers
         {
             try
             {
-                var result = await _stockServices.AddStockAsync(data.ToBusinessRequest());
+                StockMovementModel result = await _stockServices.AddStockAsync(data.ToBusinessRequest());
                 return Ok(result);
             }
             catch (ArgumentException ex)
@@ -61,7 +61,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Histórico recuperado com sucesso.", typeof(IEnumerable<StockMovementModel>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
 
-        [HttpGet("get-stock-movements/{productId}")]
+        [HttpGet("get-stock-movements")]
         public async Task<IActionResult> GetStockMovements(int productId)
         {
             try
@@ -85,7 +85,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, "Produto não encontrado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
 
-        [HttpGet("get-product-stock/{productId}")]
+        [HttpGet("get-product-stock")]
         public async Task<IActionResult> GetProductStock(int productId)
         {
             try

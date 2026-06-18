@@ -12,9 +12,24 @@
 
         public StockMovementModel() { }
 
+        public StockMovementModel( int productId, int quantity, string invoiceNumber  )
+        { 
+            ProductId = productId; 
+            Quantity = quantity;
+            InvoiceNumber = invoiceNumber; 
+        }
         public StockMovementModel(int stockMovementId, int productId, string productName, int quantity, string invoiceNumber, DateTime movementDate, string movementType)
         {
             StockMovementId = stockMovementId;
+            ProductId = productId;
+            ProductName = productName;
+            Quantity = quantity;
+            InvoiceNumber = invoiceNumber;
+            MovementDate = movementDate;
+            MovementType = movementType;
+        }
+        public StockMovementModel( int productId, string productName, int quantity, string invoiceNumber, DateTime movementDate, string movementType)
+        { 
             ProductId = productId;
             ProductName = productName;
             Quantity = quantity;

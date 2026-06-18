@@ -14,7 +14,7 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             _appDbContext = appDbContext;
         }
-        public async Task<LoginModel> CreateLogin(LoginEntity data)
+        public async Task<LoginModel> Login(LoginEntity data)
         {
             try
             {
@@ -41,15 +41,18 @@ namespace PetStore.Inventory.Infrastructure.Repository
                 throw new Exception(ex.Message);
             }
         }
-
-        public async Task<string> Login(LoginEntity data)
+         
+        public async Task<bool> RemoveAccount(int userId)
         {
-            throw new NotImplementedException();
-        }
+            LoginEntity? entity = await _appDbContext.LoginTable.FirstOrDefaultAsync(x => x.UserId == userId);
 
-        public async Task<bool> Logoff(int userId)
-        {
-            throw new NotImplementedException();
+            if (entity is null)
+            {
+                return false;
+            }
+            _appDbContext.LoginTable.Remove(entity);
+            await _appDbContext.SaveChangesAsync();
+            return true;
         }
 
 
@@ -63,6 +66,11 @@ namespace PetStore.Inventory.Infrastructure.Repository
                 : ModelFactory.CreateLogin(entity);
         }
     
+        public async Task<LoginModel> GetLoginById(int userId)
+        {
+            LoginEntity? entity = await _appDbContext.LoginTable.FirstOrDefaultAsync(x => x.UserId == userId);
+            return ModelFactory.CreateLogin(entity);
+        }
         public async Task<IEnumerable<LoginModel>> GetAllLogins()
         {
             IQueryable<LoginEntity> entities = _appDbContext.LoginTable;

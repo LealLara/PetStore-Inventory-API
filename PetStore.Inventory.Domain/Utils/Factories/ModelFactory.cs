@@ -61,7 +61,7 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 Quantity = entity.Quantity,
                 InvoiceNumber = entity.InvoiceNumber,
                 MovementDate = entity.MovementDate,
-                MovementType = entity.MovementType == StockMovementType.Inbound ? "Entrada" : "Saída"
+                MovementType = entity.MovementType == EStockMovementType.Inbound ? "Entrada" : "Saída"
             };
         }
 
@@ -75,7 +75,7 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 Quantity = s.Quantity,
                 InvoiceNumber = s.InvoiceNumber,
                 MovementDate = s.MovementDate,
-                MovementType = s.MovementType == StockMovementType.Inbound ? "Entrada" : "Saída"
+                MovementType = s.MovementType == EStockMovementType.Inbound ? "Entrada" : "Saída"
             }) ?? Enumerable.Empty<StockMovementModel>();
         }
          

@@ -8,6 +8,7 @@ namespace PetStore.Inventory.Application.Interfaces.Services
         Task<bool> CreatePatternLogin();
         Task<LoginModel> CreateLogin(LoginRegisterRequest data);
         Task<string> Login(LoginRegisterRequest data); 
-        Task<IEnumerable<LoginModel>> GetAllLogins(); 
+        Task<IEnumerable<LoginModel>> GetAllLogins();
+        Task<bool> RemoveAccount(int userId);
     }
 }

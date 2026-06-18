@@ -21,19 +21,16 @@ namespace PetStore.Inventory.Api.Controllers
         }
 
         /// <summary>
-        /// Cria um novo pedido. Apenas usuários com as funções ADMIN, SYSTEM_OPERATOR ou SELLER podem acessar este endpoint.
+        /// Cria um novo pedido. 
         /// </summary>
         /// <param name="data">Parâmetro que contém os dados do pedido.</param>
         /// <returns>Retorna o pedido criado.</returns>
-        [SwaggerOperation(Summary = "Cria um novo pedido.", Description = "Este endpoint permite a criação de um novo pedido. Apenas usuários com as funções ADMIN, SYSTEM_OPERATOR ou SELLER podem acessar este endpoint.")]
+        [SwaggerOperation(Summary = "Cria um novo pedido.", Description = "Este endpoint permite a criação de um novo pedido. ")]
         [SwaggerResponse(StatusCodes.Status200OK, "Pedido criado com sucesso.", typeof(OrderModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Dados inválidos para criar pedido.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor ao criar pedido.")]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, "Usuário não autenticado.")]
-        [SwaggerResponse(StatusCodes.Status403Forbidden, "Usuário não tem permissão para criar pedidos.")]
-
-        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR) + "," + nameof(EUserRoles.SELLER))]
-
+   
         [HttpPost("create-order")]
         public async Task<IActionResult> CreateOrder([FromBody] OrderCreateDTO data)
         {
@@ -63,8 +60,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Pedidos recuperados com sucesso.", typeof(IEnumerable<OrderModel>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
 
-        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
-
+       
         [HttpGet("get-all-orders")]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -87,7 +83,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, "Pedido não encontrado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
 
-        [HttpGet("get-order-by-id/{orderId}")]
+        [HttpGet("get-order-by-id")]
         public async Task<IActionResult> GetOrderById(int orderId)
         {
             try
@@ -110,7 +106,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Pedidos recuperados com sucesso.", typeof(IEnumerable<OrderModel>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
 
-        [HttpGet("get-orders-by-seller/{sellerName}")]
+        [HttpGet("get-orders-by-seller")]
         public async Task<IActionResult> GetOrdersBySeller(string sellerName)
         {
             try

@@ -107,5 +107,12 @@ namespace PetStore.Inventory.Application.Services
 
             return await _repository.GetUserFilteredByNickname(filters);
         }
+        public async Task<bool> RemoveUser(int userId)
+        {
+            if (userId <= 0)
+                throw new ArgumentException("Devem ser informado o codigo do usuario.");
+
+            return await _repository.RemoveUser(userId);
+        }
     }
 }

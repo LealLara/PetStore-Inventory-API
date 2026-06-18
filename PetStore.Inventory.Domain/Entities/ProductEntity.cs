@@ -12,35 +12,20 @@ namespace PetStore.Inventory.Domain.Entities
         public int StockQuantity { get; private set; }  
 
         public ProductEntity(){}
-        public ProductEntity(int productId, string productName, string productDescription, float price )
+        public ProductEntity(int productId, string productName, string productDescription, float price, int stockQuantity)
         {
             ProductId = productId;
             ProductName = productName;
             ProductDescription = productDescription;
             Price = price;
-            StockQuantity = 0;
+            StockQuantity = stockQuantity;
         }
-        public ProductEntity( string productName, string productDescription, float price )
+        public ProductEntity( string productName, string productDescription, float price, int stockQuantity )
         {
             ProductName = productName;
             ProductDescription = productDescription;
             Price = price;
-            StockQuantity = 0;
-        }
-        public void AddStock(int quantity)
-        {
-            if (quantity <= 0)
-                throw new ArgumentException("A quantidade deve ser maior que zero.");
-            StockQuantity += quantity;
-        }
-
-        public void RemoveStock(int quantity)
-        {
-            if (quantity <= 0)
-                throw new ArgumentException("A quantidade deve ser maior que zero.");
-            if (StockQuantity < quantity)
-                throw new InvalidOperationException("Estoque insuficiente.");
-            StockQuantity -= quantity;
+            StockQuantity = stockQuantity;
         }
     }
 }

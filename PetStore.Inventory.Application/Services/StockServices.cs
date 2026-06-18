@@ -1,8 +1,11 @@
-﻿using PetStore.Inventory.Application.ApplicationModel.Requests;
+﻿using FluentValidation;
+using PetStore.Inventory.Application.ApplicationModel.Requests;
 using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
-using PetStore.Inventory.Domain.Entities;  
+using PetStore.Inventory.Domain.Entities;
+using PetStore.Inventory.Domain.Utils.Enums;
+using PetStore.Inventory.Domain.Utils.Validations;
 
 namespace PetStore.Inventory.Application.Services
 {
@@ -21,41 +24,33 @@ namespace PetStore.Inventory.Application.Services
 
         public async Task<StockMovementModel> AddStockAsync(StockAddRequest request)
         {
-            // Validar quantidade
-            if (request.Quantity <= 0)
-                throw new ArgumentException("A quantidade deve ser maior que zero.");
+            StockValidation valid = new();
+            valid.ValidateAndThrow(request.ToModel());
+             
+            ProductModel productModel = await _productRepository.GetAllProductsFilteredById(request.ProductId);
 
-            // Validar nota fiscal
-            if (string.IsNullOrWhiteSpace(request.InvoiceNumber))
-                throw new ArgumentException("O número da nota fiscal é obrigatório.");
-
-            // Buscar produto
-            var product = await _productRepository.GetAllProductsFilteredById(request.ProductId);
-            if (product == null)
+            if (productModel == null)
                 throw new ArgumentException($"Produto com ID {request.ProductId} não encontrado.");
+              
+            productModel.AddStock(request.Quantity);
+             
+            var updated = await _productRepository.UpdateProduct(productModel.ToEntity());
 
-            // Criar entidade do produto para atualizar estoque
-            var productEntity = product.ToEntity();
-            productEntity.AddStock(request.Quantity);
-
-            // Atualizar estoque
-            var updated = await _stockMovementRepository.UpdateProductStock(productEntity);
-            if (!updated)
+            if (updated == null)
                 throw new Exception("Falha ao atualizar o estoque do produto.");
-
-            // Registrar movimento
-            var movementEntity = new StockMovementEntity(
+             
+            StockMovementEntity movementEntity = new(
                 request.ProductId,
                 request.Quantity,
                 request.InvoiceNumber,
-                StockMovementType.Inbound
+                EStockMovementType.Inbound
             );
 
             var movement = await _stockMovementRepository.AddStockMovement(movementEntity);
 
             return movement;
         }
-
+        
         public async Task<IEnumerable<StockMovementModel>> GetStockMovementsByProductId(int productId)
         {
             return await _stockMovementRepository.GetMovementsByProductId(productId);

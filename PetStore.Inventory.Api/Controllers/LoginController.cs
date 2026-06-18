@@ -14,9 +14,11 @@ namespace PetStore.Inventory.Api.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ILoginServices _authService;
+      
+
         public LoginController(ILoginServices authService)
         {
-            _authService = authService;
+            _authService = authService; 
         }
 
         /// <summary>
@@ -59,6 +61,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden, "Acesso negado. Apenas usuários com os papéis de ADMIN ou SYSTEM_OPERATOR podem acessar este endpoint")]
 
         [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
+        [ApiExplorerSettings(IgnoreApi = true)]
 
         [HttpGet("get-all-logins")]
         public async Task<IActionResult> GetAllLogins()

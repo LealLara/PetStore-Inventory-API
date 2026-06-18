@@ -15,7 +15,7 @@ namespace PetStore.Inventory.Domain.Utils.Validations
 
             RuleFor(user => user.Nickname)
                 .NotEmpty().WithMessage("O apelido é obrigatório.")
-                .MaximumLength(10).WithMessage("O apelido não pode exceder 10 caracteres.")
+                .MaximumLength(20).WithMessage("O apelido não pode exceder 20 caracteres.")
                 .MinimumLength(3).WithMessage("O apelido deve ter pelo menos 3 caracteres.");
 
             RuleFor(user => user.Email)

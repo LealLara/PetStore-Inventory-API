@@ -3,7 +3,6 @@ using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
 using PetStore.Inventory.Domain.Entities;
-using PetStore.Inventory.Domain.Interfaces.Repositories;
 
 namespace PetStore.Inventory.Application.Services
 {
@@ -19,8 +18,7 @@ namespace PetStore.Inventory.Application.Services
         }
 
         public async Task<OrderModel> CreateOrderAsync(OrderCreateRequest request)
-        {
-            // Validar dados básicos
+        { 
             if (string.IsNullOrWhiteSpace(request.CustomerDocument))
                 throw new ArgumentException("O documento do cliente é obrigatório.");
 
@@ -32,28 +30,23 @@ namespace PetStore.Inventory.Application.Services
 
             var orderItems = new List<OrderItemEntity>();
             decimal totalAmount = 0;
-
-            // Validar estoque e preparar itens
+             
             foreach (var itemRequest in request.Items)
-            {
-                // Buscar produto
+            { 
                 var product = await _productRepository.GetAllProductsFilteredById(itemRequest.ProductId);
                 if (product == null)
                     throw new ArgumentException($"Produto com ID {itemRequest.ProductId} não encontrado.");
-
-                // Validar estoque
+                 
                 if (product.StockQuantity < itemRequest.Quantity)
                     throw new InvalidOperationException(
                         $"Estoque insuficiente para o produto '{product.ProductName}'. " +
                         $"Disponível: {product.StockQuantity}, Solicitado: {itemRequest.Quantity}");
+                 
+                ProductModel productModel = new();
+                productModel.RemoveStock(itemRequest.Quantity);
+                await _productRepository.UpdateProduct(productModel.ToEntity());
 
-                // Atualizar estoque
-                var productEntity = product.ToEntity();
-                productEntity.RemoveStock(itemRequest.Quantity);
-                await _orderRepository.UpdateProductStock(productEntity);
-
-                // Criar item do pedido
-                var orderItem = new OrderItemEntity(
+                OrderItemEntity orderItem = new(
                     product.ProductId,
                     itemRequest.Quantity,
                     (decimal)product.Price
@@ -62,17 +55,14 @@ namespace PetStore.Inventory.Application.Services
                 totalAmount += orderItem.Subtotal;
             }
 
-            // Criar pedido
-            var orderEntity = new OrderEntity(
+            OrderEntity orderEntity = new(
                 request.CustomerDocument,
                 request.SellerName,
                 totalAmount,
                 orderItems
             );
 
-            // Salvar pedido
-            var result = await _orderRepository.CreateOrder(orderEntity, orderItems);
-            return result;
+            return await _orderRepository.CreateOrder(orderEntity, orderItems);
         }
 
         public async Task<IEnumerable<OrderModel>> GetAllOrdersAsync()

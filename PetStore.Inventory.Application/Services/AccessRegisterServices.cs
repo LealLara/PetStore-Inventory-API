@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using PetStore.Inventory.Application.ApplicationModel.Requests;
+﻿using PetStore.Inventory.Application.ApplicationModel.Requests;
 using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
-using PetStore.Inventory.Domain.BusinessModel; 
+using PetStore.Inventory.Domain.BusinessModel;
 
 namespace PetStore.Inventory.Api.Controllers
 {
@@ -44,12 +43,18 @@ namespace PetStore.Inventory.Api.Controllers
 
         public async Task<string> Login(LoginRegisterRequest request)
         {
-           return await _loginServices.Login(request.BuildLogin(request.Nickname, request.Password));
+            return await _loginServices.Login(request.BuildLogin(request.Nickname, request.Password));
         }
-         
-        public async Task<bool> RemoveUser(int userId)
+
+        public async Task<bool> RemoveAccount(int userId)
         {
-            throw new NotImplementedException();
+            bool success;
+            success = await _loginServices.RemoveAccount(userId);
+
+            if (success)
+                success = await _userServices.RemoveUser(userId);
+
+            return success;
         }
     }
 }

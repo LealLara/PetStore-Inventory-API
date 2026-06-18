@@ -2,10 +2,9 @@
 {
     public class PatternProducts
     {
-
         public const string PatternProduct1 = "Dog Food";
         public const string ProductDescription1 = "Comida canina de alta qualidade.";
-        public const float Price1 = 29.99f;  
+        public const float Price1 = 29.99f;
 
         public const string PatternProduct2 = "Cat Toy";
         public const string ProductDescription2 = "Brinquedo interativo para manter seu gato entretido.";
@@ -41,6 +40,8 @@
 
         public const string PatternProduct10 = "Bird Feeder";
         public const string ProductDescription10 = "Alimentador para pássaros, fácil de encher e limpar.";
-        public const float Price10 = 12.99f; 
+        public const float Price10 = 12.99f;
+
+        public const int PatternStockQuantity = 30;
     }
 }

@@ -10,11 +10,13 @@ namespace PetStore.Inventory.Application.Services
     {
         private readonly ILoginRepository _repository;
         private readonly IEmailServices _emailServices;
+        private readonly IAuthenticationServices _authenticationServices; // por enquanto, vou gerar o token sem email para nao disparar toda vez que for testar o login pois isso vai bloquear a minha conta disparadora
 
-        public LoginServices(ILoginRepository loginRepository, IEmailServices emailServices)
+        public LoginServices(ILoginRepository loginRepository, IEmailServices emailServices, IAuthenticationServices authenticationServices)
         {
             _repository = loginRepository;
             _emailServices = emailServices;
+            _authenticationServices = authenticationServices;
         }
         public async Task<bool> CreatePatternLogin()
         {
@@ -32,7 +34,7 @@ namespace PetStore.Inventory.Application.Services
 
             loginModel.Password = hasher.HashPassword(loginModel, request.Password);
 
-            return await _repository.CreateLogin(loginModel.ToEntity());
+            return await _repository.Login(loginModel.ToEntity());
         }
         public async Task<string?> Login(LoginRegisterRequest request)
         {
@@ -57,12 +59,24 @@ namespace PetStore.Inventory.Application.Services
             if (result == PasswordVerificationResult.Failed)
                 return null;
 
-            return await _emailServices.SetLoginEmail(login);
+            // return await _emailServices.SetLoginEmail(login); // por enquanto vou bloquear o envio de email para evitar bloqueio da minha conta disparadora
+
+            UserDataToSendLoginEmailModel dataToken = await _authenticationServices.GenerateJwt(login);
+            if (dataToken is not null)
+            {
+                return $"Token gerado: {dataToken.Token}";
+            }
+
+            return string.Empty;
         }
 
         public async Task<IEnumerable<LoginModel>> GetAllLogins()
         {
             return await _repository.GetAllLogins();
+        }
+        public async Task<bool> RemoveAccount(int userId)
+        {
+            return await _repository.RemoveAccount(userId);
         }
     }
 }

@@ -7,7 +7,6 @@ namespace PetStore.Inventory.Application.Interfaces.Repositories
     {
         Task<StockMovementModel> AddStockMovement(StockMovementEntity entity);
         Task<IEnumerable<StockMovementModel>> GetMovementsByProductId(int productId);
-        Task<ProductModel> GetProductWithStock(int productId);
-        Task<bool> UpdateProductStock(ProductEntity entity);
+        Task<ProductModel> GetProductWithStock(int productId); 
     }
 }

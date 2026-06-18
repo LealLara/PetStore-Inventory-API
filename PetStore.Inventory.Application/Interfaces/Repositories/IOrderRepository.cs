@@ -8,8 +8,6 @@ namespace PetStore.Inventory.Application.Interfaces.Repositories
         Task<OrderModel> CreateOrder(OrderEntity entity, List<OrderItemEntity> items);
         Task<IEnumerable<OrderModel>> GetAllOrders();
         Task<OrderModel> GetOrderById(int orderId);
-        Task<IEnumerable<OrderModel>> GetOrdersBySeller(string sellerName);
-        Task<bool> UpdateProductStock(ProductEntity entity);
-        Task<ProductModel> GetProductWithStock(int productId);
+        Task<IEnumerable<OrderModel>> GetOrdersBySeller(string sellerName); 
     }
 }

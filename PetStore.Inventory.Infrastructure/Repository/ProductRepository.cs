@@ -106,17 +106,18 @@ namespace PetStore.Inventory.Infrastructure.Repository
         {
             try
             {
-                ProductModel existingProduct = await GetAllProductsFilteredById(entity.ProductId);
-                if (existingProduct == null)
+                ProductEntity existing = await _context.ProductTable.FindAsync(entity.ProductId);
+                if (existing != null)
                 {
-                    throw new Exception("Produto não encontrado");
+                    _context.Entry(existing).CurrentValues.SetValues(entity);
                 }
                 else
                 {
                     _context.ProductTable.Update(entity);
-                    await _context.SaveChangesAsync();
-                    return ModelFactory.CreateProduct(entity);
                 }
+
+                await _context.SaveChangesAsync();
+                return ModelFactory.CreateProduct(entity);
             }
             catch (Exception ex)
             {

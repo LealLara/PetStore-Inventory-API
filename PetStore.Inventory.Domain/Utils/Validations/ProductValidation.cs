@@ -16,11 +16,7 @@ namespace PetStore.Inventory.Domain.Utils.Validations
 
             RuleFor(product => product.Price)
                 .NotEmpty().WithMessage("O preço do produto é obrigatório.")
-                .GreaterThan(0).WithMessage("O preço do produto deve ser maior que zero.");
-
-          /*  RuleFor(product => product.Quantity)
-                .NotEmpty().WithMessage("A quantidade do produto é obrigatória.") 
-                .Must(quantity => quantity > 0).WithMessage("A quantidade do produto deve ser maior que zero.");*/
+                .GreaterThan(0).WithMessage("O preço do produto deve ser maior que zero."); 
         }
     }
 }

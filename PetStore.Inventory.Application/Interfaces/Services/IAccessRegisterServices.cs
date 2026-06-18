@@ -7,6 +7,6 @@ namespace PetStore.Inventory.Application.Interfaces.Services
     {
         Task<UserRegisterModel> CreateAccessRegister(UserRegisterRequest request);
         Task<string> Login(LoginRegisterRequest request); 
-        Task<bool> RemoveUser(int userId);
+        Task<bool> RemoveAccount(int userId);
     }
 }
