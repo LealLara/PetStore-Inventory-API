@@ -382,6 +382,68 @@ Este endpoint cria uma nova comanda utilizando os produtos cadastrados e dispon�
 ```
 
 ---
+## Execução com Docker
+
+
+### Pré-requisitos
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e rodando
+
+### Passos
+ 
+# 1. Clone o repositório
+git clone https://github.com/LealLara/PetStore-Inventory-API.git
+cd PetStore-Inventory-API
+
+# 2. Construir a imagem
+docker compose build
+
+# 3. Iniciar o container
+docker compose up -d
+
+# 4. Acessar o Swagger
+# http://localhost:5000/swagger
+
+### Comandos úteis
+
+docker compose logs -f      # Ver logs
+docker compose down         # Parar o container
+docker compose down -v      # Parar e limpar dados
+docker compose restart      # Reiniciar
+docker ps                   # Ver containers rodando
+
+
+
+### Fluxo de testes
+
+# 1. Inicializar a aplicação
+curl -X POST http://localhost:5000/AccessConfig/start-app
+
+# 2. Login (admin/senha)
+curl -X POST http://localhost:5000/Login/login \
+  -H "Content-Type: application/json" \
+  -d '{"nickname": "admin", "password": "senha"}'
+
+# 3. Criar produto (substitua TOKEN)
+curl -X POST http://localhost:5000/Product/create-product \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI" \
+  -d '{"productName": "Ração Premium", "productDescription": "Ração para cães", "price": 99.90, "stockQuantity": 10}'
+
+# 4. Adicionar estoque
+curl -X POST http://localhost:5000/Stock/add-stock \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI" \
+  -d '{"productId": 1, "quantity": 5, "invoiceNumber": "NF-001"}'
+
+# 5. Criar pedido
+curl -X POST http://localhost:5000/Order/create-order \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI" \
+  -d '{"customerDocument": "12345678900", "sellerName": "Ana", "items": [{"productId": 1, "quantity": 2}]}'
+
+   
+
+----
 
 # Fluxo completo de utilização
 
