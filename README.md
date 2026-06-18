@@ -1,38 +1,44 @@
-# Fluxo completo de utilização da API
+# Fluxo completo da API
 
-## 1. Inicializar a aplicação
+## 1. Inicialização da aplicação
 
-### Criar os registros iniciais
+Antes de utilizar qualquer funcionalidade da API, execute o endpoint responsável por criar todos os registros necessários para o funcionamento do sistema.
 
-**Endpoint**
+### Endpoint
 
 ```http
 POST /AccessConfig/start-app
 ```
 
-Este endpoint cria automaticamente:
+### Objetivo
 
-- Roles padrão
+Cria automaticamente os registros iniciais da aplicação:
+
+- Roles
 - Tipos de log
-- Usuários iniciais
+- Usuários padrão
 - Logins
 - Produtos genéricos
 
-Após sua execução, a API estará pronta para uso.
+Após sua execução a aplicação estará pronta para utilização.
 
 ---
 
-## 2. Criar novos usuários
+# 2. Cadastro de usuários
 
-### Endpoint
+## Endpoint
 
 ```http
 POST /AccessRegister/create-user
 ```
 
-### Criar Administrador
+Este endpoint cria um novo usuário juntamente com seu login.
 
-#### Request
+---
+
+## Cadastro de Administrador
+
+### Request
 
 ```json
 {
@@ -44,7 +50,7 @@ POST /AccessRegister/create-user
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -59,9 +65,9 @@ POST /AccessRegister/create-user
 
 ---
 
-### Criar Vendedor
+## Cadastro de Vendedor
 
-#### Request
+### Request
 
 ```json
 {
@@ -73,7 +79,7 @@ POST /AccessRegister/create-user
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -88,21 +94,23 @@ POST /AccessRegister/create-user
 
 ---
 
-## 3. Realizar login
+# 3. Login
 
-### Endpoint
+## Endpoint
 
 ```http
 POST /AccessRegister/login
 ```
 
-Responsável por autenticar o usuário e registrar o login no sistema.
+Este endpoint autentica o usuário e registra o login no sistema.
 
-Em ambiente normal, um e-mail contendo o token JWT é enviado ao usuário.
+Quando o envio de e-mails estiver habilitado, um token JWT será enviado automaticamente para o e-mail cadastrado.
 
-**Atualmente o envio de e-mail está temporariamente bloqueado**, portanto o token é retornado diretamente pela API.
+Atualmente o disparo de e-mails encontra-se temporariamente bloqueado, portanto o token JWT é retornado diretamente na resposta da API.
 
-### Request
+---
+
+## Request
 
 ```json
 {
@@ -111,19 +119,25 @@ Em ambiente normal, um e-mail contendo o token JWT é enviado ao usuário.
 }
 ```
 
-### Token retornado (Administrador)
+---
+
+## Response (Administrador)
 
 ```text
 Token gerado: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0IiwidW5pcXVlX25hbWUiOiJpbmljaW8tYWRtIiwicm9sZSI6IkFETUlOIiwibmJmIjoxNzgxODAwNDUzLCJleHAiOjE3ODE4MjkyNTMsImlhdCI6MTc4MTgwMDQ1M30.UQTtq6BfKzal6YEiXQquBSgAhV1AnqV5lb9Jpj89Jvg
 ```
 
-### Token retornado (Vendedor)
+---
+
+## Response (Vendedor)
 
 ```text
 Token gerado: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1IiwidW5pcXVlX25hbWUiOiJpbmljaW8tc2VsIiwicm9sZSI6IlNFTExFUiIsIm5iZiI6MTc4MTgwMDUwNiwiZXhwIjoxNzgxODI5MzA2LCJpYXQiOjE3ODE4MDA1MDZ9.OlcYUH6dQURCbne5mDlMoyxj0ePtObwdpTkXn9RHeUU
 ```
 
-### Mensagem esperada quando o envio de e-mail estiver habilitado
+---
+
+## Resposta esperada quando o envio de e-mails estiver habilitado
 
 ```text
 Acabamos de enviar um token secreto para o seu e-mail. Com ele, você poderá acessar sua conta com segurança.
@@ -133,7 +147,7 @@ Acabamos de enviar um token secreto para o seu e-mail. Com ele, você poderá ac
 
 ## Autenticação
 
-Após obter o token, informe-o em todas as requisições protegidas.
+Após obter o token JWT, todas as requisições protegidas deverão conter o seguinte header:
 
 ```http
 Authorization: Bearer <TOKEN>
@@ -141,25 +155,33 @@ Authorization: Bearer <TOKEN>
 
 ---
 
-## Produtos iniciais
+# 4. Produtos iniciais
 
-Após executar o endpoint `/AccessConfig/start-app`, a aplicação cria automaticamente **10 produtos genéricos**.
+Após a execução do endpoint:
 
-Os exemplos abaixo demonstram a criação de novos produtos além desses registros iniciais.
+```http
+POST /AccessConfig/start-app
+```
+
+a aplicação cadastra automaticamente **10 produtos genéricos**, permitindo que pedidos possam ser criados imediatamente.
+
+Os próximos exemplos demonstram o cadastro de novos produtos além daqueles gerados automaticamente.
 
 ---
 
-## 4. Criar produtos
+# 5. Cadastro de produtos
 
-### Endpoint
+## Endpoint
 
 ```http
 POST /Product/create-product
 ```
 
-### Produto 1
+---
 
-#### Request
+## Primeiro produto
+
+### Request
 
 ```json
 {
@@ -170,7 +192,7 @@ POST /Product/create-product
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -184,9 +206,9 @@ POST /Product/create-product
 
 ---
 
-### Produto 2
+## Segundo produto
 
-#### Request
+### Request
 
 ```json
 {
@@ -197,7 +219,7 @@ POST /Product/create-product
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -211,17 +233,19 @@ POST /Product/create-product
 
 ---
 
-## 5. Adicionar estoque
+# 6. Cadastro de estoque
 
-### Endpoint
+## Endpoint
 
 ```http
 POST /Stock/add-stock
 ```
 
-### Produto 11
+---
 
-#### Request
+## Adicionar estoque ao primeiro produto
+
+### Request
 
 ```json
 {
@@ -231,7 +255,7 @@ POST /Stock/add-stock
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -247,9 +271,9 @@ POST /Stock/add-stock
 
 ---
 
-### Produto 12
+## Adicionar estoque ao segundo produto
 
-#### Request
+### Request
 
 ```json
 {
@@ -259,7 +283,7 @@ POST /Stock/add-stock
 }
 ```
 
-#### Response
+### Response
 
 ```json
 {
@@ -275,9 +299,9 @@ POST /Stock/add-stock
 
 ---
 
-## 6. Atualizar produto
+# 7. Atualização de produto
 
-### Endpoint
+## Endpoint
 
 ```http
 PUT /Product/update-product
@@ -309,13 +333,17 @@ PUT /Product/update-product
 
 ---
 
-## 7. Criar pedido
+# 8. Criação de pedidos
 
-### Endpoint
+## Endpoint
 
 ```http
 POST /Order/create-order
 ```
+
+Este endpoint cria uma nova comanda utilizando os produtos cadastrados e disponíveis em estoque.
+
+---
 
 ### Request
 
@@ -355,14 +383,14 @@ POST /Order/create-order
 
 ---
 
-## Fluxo resumido
+# Fluxo completo de utilização
 
 1. Executar `POST /AccessConfig/start-app`.
 2. Criar usuários utilizando `POST /AccessRegister/create-user`.
-3. Fazer login em `POST /AccessRegister/login`.
+3. Realizar login utilizando `POST /AccessRegister/login`.
 4. Copiar o token JWT retornado.
 5. Informar o token no header `Authorization: Bearer <TOKEN>`.
 6. Cadastrar novos produtos.
 7. Adicionar estoque aos produtos.
 8. Atualizar produtos quando necessário.
-9. Criar pedidos utilizando os produtos cadastrados.
+9. Criar pedidos utilizando `POST /Order/create-order`.
