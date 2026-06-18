@@ -26,6 +26,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Recupera todos os produtos cadastrados no sistema.", Description = "Este endpoint permite a recuperação de todos os produtos cadastrados no sistema.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Produtos recuperados com sucesso.", typeof(IEnumerable<ProductModel>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor ao recuperar os produtos.")]
+
         [HttpGet("get-all-products")]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -116,6 +117,38 @@ namespace PetStore.Inventory.Api.Controllers
         }
 
         /// <summary>
+        /// Cria um novo produto no sistema. Apenas usuários com as funções ADMIN ou SYSTEM_OPERATOR podem acessar este endpoint.
+        /// </summary>
+        /// <param name="data">Parâmetro que contém os dados do produto a ser atualizado.</param>
+        /// <returns>Retorna o produto atualizado.</returns>
+        [SwaggerOperation(Summary = "Atualiza um novo produto no sistema.", Description = "Este endpoint permite a atualização de um produto no sistema. Apenas usuários com as funções ADMIN ou SYSTEM_OPERATOR podem acessar este endpoint.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Produto atualizado com sucesso.", typeof(ProductModel))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Dados inválidos para atualização do produto.")]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor ao atualizar o produto.")]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Usuário não autenticado.")]
+        [SwaggerResponse(StatusCodes.Status403Forbidden, "Usuário não tem permissão para atualizar produtos.")]
+
+        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
+
+        [HttpPut("update-product")]
+        public async Task<IActionResult> UpdateProduct(ProductManagementDTO data)
+        {
+            try
+            {
+                ProductModel result = await _service.UpdateProduct(data.ToBusinessRequest());
+                if (result is null)
+                {
+                    return BadRequest("A atualização do produto falhou.");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao atualizar o produto: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Remove um produto do sistema. Apenas usuários com as funções ADMIN ou SYSTEM_OPERATOR podem acessar este endpoint.
         /// </summary>
         /// <param name="id">ID do produto a ser removido.</param>
@@ -146,7 +179,7 @@ namespace PetStore.Inventory.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao remover o produto: {ex.Message}");
             }
         }
-         
+
         /// <summary>
         /// Cria produtos padrão no sistema. Este endpoint é utilizado para inicializar o sistema com produtos de exemplo. Não é necessário fornecer dados adicionais, pois os produtos padrão são pré-definidos.
         /// </summary>
@@ -176,23 +209,5 @@ namespace PetStore.Inventory.Api.Controllers
             }
         }
 
-
-        [HttpPut("update-product")]
-        public async Task<IActionResult> UpdateProduct(ProductManagementDTO data)
-        {
-            try
-            {
-                ProductModel result = await _service.UpdateProduct(data.ToBusinessRequest());
-                if (result is null)
-                {
-                    return BadRequest("A atualização do produto falhou.");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocorreu um erro ao atualizar o produto: {ex.Message}");
-            }
-        }
     }
 }

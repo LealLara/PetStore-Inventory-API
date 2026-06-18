@@ -9,6 +9,8 @@ namespace PetStore.Inventory.Api.Controllers
     [Authorize]
     public class SalesPortalController : ControllerBase
     {
+
+
  
     
     

@@ -6,13 +6,12 @@ namespace PetStore.Inventory.Api.ApplicationDTOs.Requests
     {
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
-        public float Price { get; set; }
-        public int Quantity { get; set; }
+        public float Price { get; set; } 
 
         public ProductDTO(){ }
         public ProductRequest ToBusinessRequest()
         {
-            return new (ProductName, ProductDescription, Price, Quantity);
+            return new (ProductName, ProductDescription, Price);
         }
     }
 }

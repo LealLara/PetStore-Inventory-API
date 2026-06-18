@@ -7,29 +7,26 @@ namespace PetStore.Inventory.Domain.BusinessModel
         public int ProductId{ get; set; }
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
-        public float Price { get; set; }
-        public int Quantity { get; set; }
+        public float Price { get; set; } 
 
         public ProductModel(){}
-        public ProductModel(int productId, string productName, string productDescription, float price, int quantity)
+        public ProductModel(int productId, string productName, string productDescription, float price )
         {
             ProductId = productId;
             ProductName = productName;
             ProductDescription = productDescription;
-            Price = price;
-            Quantity = quantity;
+            Price = price; 
         }
-        public ProductModel(string productName, string productDescription, float price, int quantity)
+        public ProductModel(string productName, string productDescription, float price )
         {
             ProductName = productName;
             ProductDescription = productDescription;
-            Price = price;
-            Quantity = quantity;
+            Price = price; 
         }
 
         public ProductEntity ToEntity()
         {
-            return new(ProductId, ProductName, ProductDescription, Price, Quantity);
+            return new(ProductId, ProductName, ProductDescription, Price);
         }
     }
 }

@@ -25,8 +25,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerOperation(Summary = "Retorna uma lista de papéis (roles) disponíveis no sistema.", Description = "O serviço de papéis é chamado para processar a solicitação e recuperar os papéis do banco de dados. Se a operação for bem-sucedida, o endpoint retorna um status 200 OK com a lista de papéis; caso contrário, ou 404 se nenhum for encontrado; Caso contrário, retorna um status 500 Internal Server Error com uma mensagem de erro detalhada.")]
         [SwaggerResponse(StatusCodes.Status200OK, "Papéis retornados com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum papel encontrado.")]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao recuperar os papéis.")]
-        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Falha ao recuperar os papéis.")] 
 
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
