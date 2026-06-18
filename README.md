@@ -129,6 +129,34 @@ Cobre a traducao de resultado dos servicos para HTTP:
 
 ## Execucao manual da API
 
+### Subir com Docker
+
+Na raiz da solucao:
+
+```powershell
+docker compose up --build
+```
+
+A API ficara disponivel em:
+
+```text
+http://localhost:8080
+```
+
+O banco SQLite do container e salvo no volume `petstore-inventory-data`, usando a string de conexao `Data Source=/data/PetStore.db`.
+
+Para buildar a imagem manualmente:
+
+```powershell
+docker build -t petstore-inventory-api -f PetStore.Inventory.Api\Dockerfile .
+```
+
+Para executar a imagem manualmente:
+
+```powershell
+docker run --rm -p 8080:8080 -e ASPNETCORE_ENVIRONMENT=Docker -e "ConnectionStrings__DefaultConnection=Data Source=/data/PetStore.db" -v petstore-inventory-data:/data petstore-inventory-api
+```
+
 ### Subir a API
 
 ```powershell

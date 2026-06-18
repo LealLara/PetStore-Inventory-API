@@ -1,0 +1,18 @@
+services:
+  petstore-inventory-api:
+    build:
+      context: .
+      dockerfile: PetStore.Inventory.Api/Dockerfile
+    image: petstore-inventory-api:latest
+    container_name: petstore-inventory-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__DefaultConnection: "Data Source=/data/PetStore.db"
+    volumes:
+      - petstore-inventory-data:/data
+
+volumes:
+  petstore-inventory-data:

@@ -10,8 +10,12 @@
 **/.vscode
 **/*.*proj.user
 **/*.dbmdl
+**/*.db
+**/*.db-shm
+**/*.db-wal
 **/*.jfm
 **/azds.yaml
+**/artifacts
 **/bin
 **/charts
 **/docker-compose*
