@@ -381,7 +381,23 @@ Este endpoint cria uma nova comanda utilizando os produtos cadastrados e dispon�
 }
 ```
 
+--- 
+
+# Fluxo completo de utilização
+
+1. Executar `POST /AccessConfig/start-app`.
+2. Criar usuários utilizando `POST /AccessRegister/create-user`.
+3. Realizar login utilizando `POST /AccessRegister/login`.
+4. Copiar o token JWT retornado.
+5. Informar o token no header `Authorization: Bearer <TOKEN>`.
+6. Cadastrar novos produtos.
+7. Adicionar estoque aos produtos.
+8. Atualizar produtos quando necessário.
+9. Criar pedidos utilizando `POST /Order/create-order`.
+
+
 ---
+
 ## Execução com Docker
 
 
@@ -441,18 +457,10 @@ curl -X POST http://localhost:5000/Order/create-order \
   -H "Authorization: Bearer SEU_TOKEN_AQUI" \
   -d '{"customerDocument": "12345678900", "sellerName": "Ana", "items": [{"productId": 1, "quantity": 2}]}'
 
-   
+### Observações
 
-----
+O banco SQLite é persistido na pasta ./data do projeto
 
-# Fluxo completo de utilização
+Para limpar os dados: docker compose down -v
 
-1. Executar `POST /AccessConfig/start-app`.
-2. Criar usuários utilizando `POST /AccessRegister/create-user`.
-3. Realizar login utilizando `POST /AccessRegister/login`.
-4. Copiar o token JWT retornado.
-5. Informar o token no header `Authorization: Bearer <TOKEN>`.
-6. Cadastrar novos produtos.
-7. Adicionar estoque aos produtos.
-8. Atualizar produtos quando necessário.
-9. Criar pedidos utilizando `POST /Order/create-order`.
+Se a porta 5000 estiver em uso, altere no docker-compose.yml
