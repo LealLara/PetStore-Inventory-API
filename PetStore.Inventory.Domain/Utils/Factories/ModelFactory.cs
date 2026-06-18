@@ -47,7 +47,31 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 UserId = l.UserId
             }) ?? Enumerable.Empty<LoginModel>();
         }
+        public static IEnumerable<ProductModel> CreateProducts(IQueryable<ProductEntity> productEntities)
+        {
+            return productEntities?.Select(p => new ProductModel
+            {
+                ProductId = p.ProductId,
+                ProductName = p.ProductName,
+                ProductDescription = p.ProductDescription,
+                Price = p.Price
+            }) ?? Enumerable.Empty<ProductModel>();
+        }
+        public static ProductModel CreateProduct(ProductEntity productEntity)
+        {
+            if (productEntity == null)
+                return null;
 
+            return new ProductModel
+            {
+                ProductId = productEntity.ProductId,
+                ProductName = productEntity.ProductName,
+                ProductDescription = productEntity.ProductDescription,
+                Price = productEntity.Price
+            };
+        }
+
+         
         public static LoginModel CreateLogin(LoginEntity loginEntity)
         {
             if (loginEntity == null)

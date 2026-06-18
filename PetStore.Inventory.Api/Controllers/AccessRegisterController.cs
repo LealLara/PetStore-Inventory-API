@@ -4,6 +4,7 @@ using PetStore.Inventory.Api.ApplicationDTOs.Requests;
 using PetStore.Inventory.Application.BusinessDTOs.Results;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
+using PetStore.Inventory.Domain.Utils.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PetStore.Inventory.Application.Services
@@ -94,7 +95,9 @@ namespace PetStore.Inventory.Application.Services
         [SwaggerResponse(StatusCodes.Status200OK,"Usuário removido com sucesso.")]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.")]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
-        [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
+        [SwaggerResponse(StatusCodes.Status403Forbidden, "Acesso negado.")]
+
+        [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
 
         [HttpPost("delete-account")]
         public async Task<IActionResult> RemoveUser(int userId)

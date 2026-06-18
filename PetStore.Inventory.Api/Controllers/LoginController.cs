@@ -49,14 +49,14 @@ namespace PetStore.Inventory.Api.Controllers
             }
         }
         /// <summary>
-        /// Retorna todos os logins cadastrados no sistema. Apenas usuários com a função ADMIN podem acessar este endpoint.
+        /// Retorna todos os logins cadastrados no sistema. Apenas usuários com os papéis de ADMIN ou SYSTEM_OPERATOR estão autorizados a acessar este endpoint, garantindo que apenas usuários com permissões adequadas possam criar novos usuários no sistema.
         /// </summary>
         /// <returns>Lista de logins cadastrados.</returns>
-        [SwaggerOperation(Summary = "Retorna todos os logins cadastrados", Description = "Apenas usuários com a função ADMIN podem acessar este endpoint")]
+        [SwaggerOperation(Summary = "Retorna todos os logins cadastrados", Description = "Apenas usuários com os papéis de ADMIN ou SYSTEM_OPERATOR estão autorizados a acessar este endpoint")]
         [SwaggerResponse(StatusCodes.Status200OK, "Lista de logins retornada com sucesso", typeof(IEnumerable<LoginModel>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor")]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, "Credenciais inválidas")]
-        [SwaggerResponse(StatusCodes.Status403Forbidden, "Acesso negado. Apenas usuários com a função ADMIN podem acessar este endpoint")]
+        [SwaggerResponse(StatusCodes.Status403Forbidden, "Acesso negado. Apenas usuários com os papéis de ADMIN ou SYSTEM_OPERATOR podem acessar este endpoint")]
 
         [Authorize(Roles = nameof(EUserRoles.ADMIN) + "," + nameof(EUserRoles.SYSTEM_OPERATOR))]
 

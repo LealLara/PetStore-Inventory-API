@@ -63,7 +63,7 @@ builder.Services.AddScoped<IRoleServices, RoleServices>();
 builder.Services.AddScoped<IAccessRegisterServices, AccessRegisterServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<ILoginServices, LoginServices>();
-//builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IProductServices, ProductServices>(); 
 #endregion
 
 #region  Repositories 
@@ -73,9 +73,8 @@ builder.Services.AddScoped<ILogTypeRepository, LogTypeRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-
-//builder.Services.AddScoped<IAccessRepository, AccessRepository>();
 #endregion
 
 builder.Services.AddAuthorization();
