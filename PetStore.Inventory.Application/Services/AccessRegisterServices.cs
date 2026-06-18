@@ -2,8 +2,7 @@
 using PetStore.Inventory.Application.ApplicationModel.Requests;
 using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
-using PetStore.Inventory.Domain.BusinessModel;
-using PetStore.Inventory.Domain.Interfaces.Services;
+using PetStore.Inventory.Domain.BusinessModel; 
 
 namespace PetStore.Inventory.Api.Controllers
 {

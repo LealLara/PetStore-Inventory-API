@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetStore.Inventory.Api.ApplicationDTOs.Requests;
+using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
-using PetStore.Inventory.Domain.Interfaces.Services;
 using PetStore.Inventory.Domain.Utils.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 

@@ -47,16 +47,38 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 UserId = l.UserId
             }) ?? Enumerable.Empty<LoginModel>();
         }
-        public static IEnumerable<ProductModel> CreateProducts(IQueryable<ProductEntity> productEntities)
+
+        public static StockMovementModel CreateStockMovement(StockMovementEntity entity)
         {
-            return productEntities?.Select(p => new ProductModel
+            if (entity == null)
+                return null;
+
+            return new StockMovementModel
             {
-                ProductId = p.ProductId,
-                ProductName = p.ProductName,
-                ProductDescription = p.ProductDescription,
-                Price = p.Price
-            }) ?? Enumerable.Empty<ProductModel>();
+                StockMovementId = entity.StockMovementId,
+                ProductId = entity.ProductId,
+                ProductName = entity.Product?.ProductName ?? "Produto não encontrado",
+                Quantity = entity.Quantity,
+                InvoiceNumber = entity.InvoiceNumber,
+                MovementDate = entity.MovementDate,
+                MovementType = entity.MovementType == StockMovementType.Inbound ? "Entrada" : "Saída"
+            };
         }
+
+        public static IEnumerable<StockMovementModel> CreateStockMovements(IQueryable<StockMovementEntity> entities)
+        {
+            return entities?.Select(s => new StockMovementModel
+            {
+                StockMovementId = s.StockMovementId,
+                ProductId = s.ProductId,
+                ProductName = s.Product.ProductName,
+                Quantity = s.Quantity,
+                InvoiceNumber = s.InvoiceNumber,
+                MovementDate = s.MovementDate,
+                MovementType = s.MovementType == StockMovementType.Inbound ? "Entrada" : "Saída"
+            }) ?? Enumerable.Empty<StockMovementModel>();
+        }
+         
         public static ProductModel CreateProduct(ProductEntity productEntity)
         {
             if (productEntity == null)
@@ -67,11 +89,22 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 ProductId = productEntity.ProductId,
                 ProductName = productEntity.ProductName,
                 ProductDescription = productEntity.ProductDescription,
-                Price = productEntity.Price
+                Price = productEntity.Price,
+                StockQuantity = productEntity.StockQuantity  
             };
         }
-
          
+        public static IEnumerable<ProductModel> CreateProducts(IQueryable<ProductEntity> productEntities)
+        {
+            return productEntities?.Select(p => new ProductModel
+            {
+                ProductId = p.ProductId,
+                ProductName = p.ProductName,
+                ProductDescription = p.ProductDescription,
+                Price = p.Price,
+                StockQuantity = p.StockQuantity  
+            }) ?? Enumerable.Empty<ProductModel>();
+        }
         public static LoginModel CreateLogin(LoginEntity loginEntity)
         {
             if (loginEntity == null)
@@ -100,6 +133,49 @@ namespace PetStore.Inventory.Domain.Utils.Factories
                 Password = userEntity.Password,
                 RoleId = (EUserRoles)userEntity.RoleId
             };
+        }
+
+        public static OrderModel CreateOrder(OrderEntity orderEntity)
+        {
+            if (orderEntity == null)
+                return null;
+
+            return new OrderModel
+            {
+                OrderId = orderEntity.OrderId,
+                CustomerDocument = orderEntity.CustomerDocument,
+                SellerName = orderEntity.SellerName,
+                TotalAmount = orderEntity.TotalAmount,
+                CreatedAt = orderEntity.CreatedAt,
+                Items = orderEntity.Items?.Select(i => new OrderItemModel
+                {
+                    ProductId = i.ProductId,
+                    ProductName = i.Product?.ProductName ?? "Produto",
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice,
+                    Subtotal = i.Subtotal
+                }).ToList() ?? new()
+            };
+        }
+
+        public static IEnumerable<OrderModel> CreateOrders(IQueryable<OrderEntity> entities)
+        {
+            return entities?.Select(o => new OrderModel
+            {
+                OrderId = o.OrderId,
+                CustomerDocument = o.CustomerDocument,
+                SellerName = o.SellerName,
+                TotalAmount = o.TotalAmount,
+                CreatedAt = o.CreatedAt,
+                Items = o.Items.Select(i => new OrderItemModel
+                {
+                    ProductId = i.ProductId,
+                    ProductName = i.Product.ProductName,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice,
+                    Subtotal = i.Subtotal
+                }).ToList()
+            }) ?? Enumerable.Empty<OrderModel>();
         }
     }
 }

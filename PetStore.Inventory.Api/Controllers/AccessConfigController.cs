@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PetStore.Inventory.Domain.Interfaces.Services;
+using PetStore.Inventory.Application.Interfaces.Services;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace PetStore.Inventory.Api.Controllers

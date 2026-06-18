@@ -1,7 +1,7 @@
 ﻿using PetStore.Inventory.Application.ApplicationModel.Requests;
 using PetStore.Inventory.Domain.BusinessModel;
 
-namespace PetStore.Inventory.Domain.Interfaces.Services
+namespace PetStore.Inventory.Application.Interfaces.Services
 {
     public interface IUserServices
     {

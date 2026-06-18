@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PetStore.Inventory.Application.Interfaces.Services;
-using PetStore.Inventory.Domain.BusinessModel;
-using PetStore.Inventory.Domain.Interfaces.Services;
+using PetStore.Inventory.Domain.BusinessModel; 
 using PetStore.Inventory.Domain.Utils.Enums;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

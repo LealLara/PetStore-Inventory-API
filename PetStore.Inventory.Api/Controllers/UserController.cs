@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetStore.Inventory.Api.ApplicationDTOs.Requests;
-using PetStore.Inventory.Application.ApplicationModel.Requests;
+using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
-using PetStore.Inventory.Domain.Interfaces.Services;
 using PetStore.Inventory.Domain.Utils.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -167,7 +166,7 @@ namespace PetStore.Inventory.Api.Controllers
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor.")]
         [SwaggerResponse(StatusCodes.Status401Unauthorized, "Não autorizado.")]
 
-        [ApiExplorerSettings(IgnoreApi = true)] 
+        [ApiExplorerSettings(IgnoreApi = true)]
 
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser(UserFirstRegisterDTO userRequest)

@@ -1,6 +1,5 @@
 ﻿using PetStore.Inventory.Application.Interfaces.Repositories;
-using PetStore.Inventory.Application.Interfaces.Services;
-using PetStore.Inventory.Domain.Interfaces.Services;
+using PetStore.Inventory.Application.Interfaces.Services; 
 
 namespace PetStore.Inventory.Application.Services
 {

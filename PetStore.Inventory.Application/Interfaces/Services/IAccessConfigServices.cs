@@ -1,4 +1,4 @@
-﻿namespace PetStore.Inventory.Domain.Interfaces.Services
+﻿namespace PetStore.Inventory.Application.Interfaces.Services
 {
     public interface IAccessConfigServices
     {
