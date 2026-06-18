@@ -1,28 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using PetStore.Inventory.Application.ApplicationModel.Requests;
 using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Domain.BusinessModel;
-using PetStore.Inventory.Domain.Interfaces.Services;
-using PetStore.Inventory.Domain.Utils.Enums;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace PetStore.Inventory.Application.Services
 {
     public class LoginServices : ILoginServices
     {
         private readonly ILoginRepository _repository;
-        private readonly IUserServices _userServices;
-        private readonly string _key;
-        public LoginServices(ILoginRepository loginRepository, IConfiguration configuration, IUserServices userServices)
+        private readonly IEmailServices _emailServices;
+
+        public LoginServices(ILoginRepository loginRepository, IEmailServices emailServices)
         {
             _repository = loginRepository;
-            _key = configuration["Jwt:Key"];
-            _userServices = userServices;
+            _emailServices = emailServices;
         }
         public async Task<bool> CreatePatternLogin()
         {
@@ -65,37 +57,7 @@ namespace PetStore.Inventory.Application.Services
             if (result == PasswordVerificationResult.Failed)
                 return null;
 
-            return await GenerateJwt(login);
-        }
-        private async Task<string> GenerateJwt(LoginModel login)
-        {
-            JwtSecurityTokenHandler handler = new();
-
-            byte[] key = Encoding.ASCII.GetBytes(_key);
-
-            UserRegisterModel user =  await _userServices.GetUsersFilteredById(login.UserId);
-
-            SecurityTokenDescriptor descriptor = new()
-            {
-                Subject = new ClaimsIdentity(
-                [
-                    new Claim(ClaimTypes.NameIdentifier, login.UserId.ToString()),
-            new Claim(ClaimTypes.Name, login.Nickname),
-            new Claim(
-                ClaimTypes.Role,
-                ((EUserRoles)user.RoleId).ToString())
-                ]),
-
-                Expires = DateTime.UtcNow.AddHours(8),
-
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            SecurityToken token = handler.CreateToken(descriptor);
-
-            return  handler.WriteToken(token);
+            return await _emailServices.SetLoginEmail(login);
         }
 
         public async Task<IEnumerable<LoginModel>> GetAllLogins()

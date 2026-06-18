@@ -56,6 +56,16 @@ namespace PetStore.Inventory.Application.Services
                     throw new Exception("O email informado já está em uso.");
                 }
             }
+            UserRegisterModel nicknameAreadyExists = await GetUserFilteredByNickname(userRequest.Nickname);
+
+            if (nicknameAreadyExists is not null)
+            {
+                if (nicknameAreadyExists.Nickname == userRequest.Nickname)
+                {
+                    throw new Exception("O apelido informado já está em uso.");
+                }
+
+            }
 
             return await _repository.CreateUser(userRequest.ToEntity());
         }
@@ -91,5 +101,12 @@ namespace PetStore.Inventory.Application.Services
             return await _repository.GetUserFilteredByEmail(filters);
         }
 
+        public async Task<UserRegisterModel> GetUserFilteredByNickname(string filters)
+        {
+            if (string.IsNullOrEmpty(filters))
+                throw new ArgumentException("Devem ser informada uma string de filtro.");
+
+            return await _repository.GetUserFilteredByNickname(filters);
+        }
     }
 }

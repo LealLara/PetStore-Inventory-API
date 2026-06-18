@@ -111,5 +111,19 @@ namespace PetStore.Inventory.Infrastructure.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<UserRegisterModel> GetUserFilteredByNickname(string filters)
+        {
+            try
+            {
+                UserEntity? users = await _context.UserTable.FirstOrDefaultAsync(r => r.Nickname.Equals(filters));
+                 
+                return ModelFactory.CreateUser(users);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ using PetStore.Inventory.Application.Interfaces.Repositories;
 using PetStore.Inventory.Application.Interfaces.Services;
 using PetStore.Inventory.Application.Services;
 using PetStore.Inventory.Domain.Interfaces.Services;
+using PetStore.Inventory.Domain.Utils.Enums;
 using PetStore.Inventory.Infrastructure.Data;
 using PetStore.Inventory.Infrastructure.Repository;
 using System.Security.Claims;
@@ -64,6 +65,8 @@ builder.Services.AddScoped<IAccessRegisterServices, AccessRegisterServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<ILoginServices, LoginServices>();
 builder.Services.AddScoped<IProductServices, ProductServices>(); 
+builder.Services.AddScoped<IEmailServices, EmailServices>(); 
+builder.Services.AddScoped<IAuthenticationServices, AuthenticationServices>(); 
 #endregion
 
 #region  Repositories 
@@ -74,6 +77,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IEmailRepository, EmailRepository>(); 
 
 #endregion
 

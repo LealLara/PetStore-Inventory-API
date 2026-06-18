@@ -12,6 +12,7 @@ namespace PetStore.Inventory.Domain.Interfaces.Services
         Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByRoleId(int roleId);
         Task<IEnumerable<UserRegisterModel>> GetUsersFilteredByString(string filters);
         Task<UserRegisterModel> GetUserFilteredByEmail(string filters);
+        Task<UserRegisterModel> GetUserFilteredByNickname(string filters);
 
     }
 }
