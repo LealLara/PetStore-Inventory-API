@@ -59,15 +59,15 @@ namespace PetStore.Inventory.Application.Services
             if (result == PasswordVerificationResult.Failed)
                 return null;
 
-            // return await _emailServices.SetLoginEmail(login); // por enquanto vou bloquear o envio de email para evitar bloqueio da minha conta disparadora
+            return await _emailServices.SetLoginEmail(login); // por enquanto vou bloquear o envio de email para evitar bloqueio da minha conta disparadora
 
-            UserDataToSendLoginEmailModel dataToken = await _authenticationServices.GenerateJwt(login);
-            if (dataToken is not null)
-            {
-                return $"Token gerado: {dataToken.Token}";
-            }
+           // UserDataToSendLoginEmailModel dataToken = await _authenticationServices.GenerateJwt(login);
+           // if (dataToken is not null)
+           // {
+           //     return $"Token gerado: {dataToken.Token}";
+           // }
 
-            return string.Empty;
+            //return string.Empty;
         }
 
         public async Task<IEnumerable<LoginModel>> GetAllLogins()

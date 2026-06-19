@@ -67,7 +67,7 @@ namespace PetStore.Inventory.Application.Services
         [AllowAnonymous]
         
         [HttpPost("login")]
-        public async Task<IActionResult> login(LoginDTO data)
+        public async Task<IActionResult> Login(LoginDTO data)
         {
             try
             {
